@@ -28,7 +28,6 @@ elif sys.version_info >= (3, 9):
     )
 
 _D = TypeVar("_D", bound="date_t")
-_GMaybeTZ = TypeVar("_GMaybeTZ", bound=None | _tzinfo, covariant=True)
 _GMaybeTZT = TypeVar("_GMaybeTZT", bound=None | _tzinfo, covariant=True)
 _GMaybeTZDT = TypeVar("_GMaybeTZDT", bound=None | _tzinfo, covariant=True)
 _PMaybeTZ = TypeVar("_PMaybeTZ", bound=None | _tzinfo)
@@ -329,7 +328,7 @@ class datetime_t(Protocol[_GMaybeTZDT]):
     def time(self) -> time_t[None]:
         ...
 
-    def timetz(self) -> time_t[_GMaybeTZ]:
+    def timetz(self) -> time_t[_GMaybeTZDT]:
         ...
 
     @overload
