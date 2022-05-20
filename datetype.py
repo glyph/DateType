@@ -4,38 +4,14 @@ import sys
 from time import struct_time
 from typing import ClassVar, NamedTuple, TypeVar, overload, Protocol
 from typing import cast, Any
-from typing_extensions import Literal
 
 from datetime import datetime, timedelta, tzinfo as _tzinfo, date, time
-
-if sys.version_info >= (3, 11):
-    __all__ = (
-        "date_t",
-        "datetime_t",
-        "time_t",
-        "timedelta_t",
-        "MINYEAR",
-        "MAXYEAR",
-        "UTC",
-    )
-elif sys.version_info >= (3, 9):
-    __all__ = (
-        "date_t",
-        "datetime_t",
-        "time_t",
-        "MINYEAR",
-        "MAXYEAR",
-    )
 
 _D = TypeVar("_D", bound="date_t")
 _GMaybeTZT = TypeVar("_GMaybeTZT", bound=None | _tzinfo, covariant=True)
 _GMaybeTZDT = TypeVar("_GMaybeTZDT", bound=None | _tzinfo, covariant=True)
 _PMaybeTZ = TypeVar("_PMaybeTZ", bound=None | _tzinfo)
 Self = TypeVar("Self")
-
-MINYEAR: Literal[1]
-MAXYEAR: Literal[9999]
-
 
 if sys.version_info >= (3, 9):
 
@@ -131,10 +107,6 @@ class date_t(Protocol):
         def __sub__(self: Self, __other: timedelta) -> Self:
             ...
 
-        # @overload
-        # def __sub__(self, __other: datetime_t) -> NoReturn:
-        #     ...
-
         @overload
         def __sub__(self: _D, __other: _D) -> timedelta:
             ...
@@ -150,14 +122,6 @@ class date_t(Protocol):
         @overload
         def __sub__(self, __other: timedelta) -> date_t:
             ...
-
-        # @overload
-        # def __sub__(self, __other: datetime_t) -> NoReturn:
-        #     ...
-
-        # @overload
-        # def __sub__(self, __other: date_t) -> timedelta:
-        #     ...
 
     def __hash__(self) -> int:
         ...
