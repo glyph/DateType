@@ -1,0 +1,23 @@
+[project]
+name = "datetype"
+version = "2022.5.20"
+description = "A type wrapper for the standard library `datetime` that supplies stricter checks, such as making 'datetime' not substitutable for 'date', and separating out Naive and Aware datetimes into separate, mutually-incompatible types."
+readme = "README.md"
+# Maybe we can support earlier versions, but I haven't tested yet so let's
+# start off cautious.
+requires-python = ">=3.10
+# This file is derived directly from typeshed's `datetime.pyi`, so it's the
+# typeshed license.
+license = {file = "LICENSE.txt"}
+authors = [
+  {name = "Glyph", email = "glyph@twistedmatrix.com" } # Optional
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  # Indicate who your project is intended for
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3.10",
+]
+
+[build-system]
+build-backend = "setuptools.build_meta"
