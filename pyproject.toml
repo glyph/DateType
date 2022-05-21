@@ -5,7 +5,7 @@ description = "A type wrapper for the standard library `datetime` that supplies 
 readme = "README.md"
 # Maybe we can support earlier versions, but I haven't tested yet so let's
 # start off cautious.
-requires-python = ">=3.10
+requires-python = ">=3.10"
 # This file is derived directly from typeshed's `datetime.pyi`, so it's the
 # typeshed license.
 license = {file = "LICENSE.txt"}
@@ -21,3 +21,4 @@ classifiers = [
 
 [build-system]
 build-backend = "setuptools.build_meta"
+requires = ["setuptools>=61.0.0", "wheel"]

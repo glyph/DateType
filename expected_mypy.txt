@@ -1,0 +1,2 @@
+tryit.py:32: note: Revealed type is "Any"
+Success: no issues found in 1 source file

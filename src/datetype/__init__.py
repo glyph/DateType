@@ -438,7 +438,7 @@ class datetime_t(Protocol[_GMaybeTZDT]):
             ...
 
 
-class Naive(Protocol, datetime_t[None]):
+class Naive(datetime_t[None], Protocol):
 
     # Naive-*only* methods
     @classmethod
@@ -477,7 +477,7 @@ class Naive(Protocol, datetime_t[None]):
         return as_naive(datetime.combine(concrete(date), concrete(time), _tzinfo))
 
 
-class Aware(Protocol, datetime_t[_tzinfo]):
+class Aware(datetime_t[_tzinfo], Protocol):
     @classmethod
     def fromtimestamp(cls: type[Self], __timestamp: float, tz: _tzinfo) -> Aware:
         return as_aware(datetime.fromtimestamp(__timestamp, tz))
