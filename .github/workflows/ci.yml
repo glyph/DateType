@@ -4,12 +4,10 @@ on:
   push:
     branches:
       - trunk
-      - gh-pages
 
   pull_request:
     branches:
       - trunk
-      - gh-pages
 
 jobs:
   build:
@@ -19,11 +17,8 @@ jobs:
       fail-fast: false
       matrix:
         python: ["3.10"]
-        include:
-          - TOX_ENV: "lint"
-            python: "3.10"
-          - TOX_ENV: "py310"
-            python: "3.10"
+        TOX_ENV: ["lint", "py310", "mypy"]
+
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python
@@ -32,6 +27,7 @@ jobs:
           python-version: ${{ matrix.python }}
       - name: Tox Run
         run:  |
+          pip install tox;
           TOX_ENV="${{ matrix.TOX_ENV }}";
           echo "Starting: ${TOX_ENV} ${PUSH_DOCS}"
           if [[ -n "${TOX_ENV}" ]]; then
