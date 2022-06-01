@@ -473,7 +473,9 @@ class Naive(datetime_t[None], Protocol):
         ...
 
     @classmethod
-    def combine(cls, date: date_t, time: time_t[Any], _tzinfo: None | _tzinfo = None) -> Naive:
+    def combine(
+        cls, date: date_t, time: time_t[Any], _tzinfo: None | _tzinfo = None
+    ) -> Naive:
         return as_naive(datetime.combine(concrete(date), concrete(time), _tzinfo))
 
 
@@ -497,7 +499,9 @@ class Aware(datetime_t[_tzinfo], Protocol):
         ...
 
     @classmethod
-    def combine(cls, date: date_t, time: time_t[Any], _tzinfo: None | _tzinfo = None) -> Aware:
+    def combine(
+        cls, date: date_t, time: time_t[Any], _tzinfo: None | _tzinfo = None
+    ) -> Aware:
         return as_aware(datetime.combine(concrete(date), concrete(time), _tzinfo))
 
 
@@ -505,13 +509,16 @@ class Aware(datetime_t[_tzinfo], Protocol):
 # present as classmethods, because the classmethods would then inaccurately
 # describe the returned concrete type
 
+
 def strptime(__date_string: str, __format: str) -> Aware | Naive:
     return cast(Naive, datetime.strptime(__date_string, __format))
 
 
 if sys.version_info >= (3, 7):
+
     def fromisoformat(__date_string: str) -> Aware | Naive:
         return cast(Naive, datetime.fromisoformat(__date_string))
+
 
 def date_only(d: date) -> date_t:
     if isinstance(d, datetime):
@@ -530,20 +537,25 @@ def as_naive(dt: datetime) -> Naive:
         raise TypeError(f"{dt} is aware, not naive")
     return cast(Naive, dt)
 
+
 @overload
 def concrete(dt: datetime_t[None | _tzinfo]) -> datetime:
     ...
 
+
 @overload
 def concrete(dt: date_t) -> date:
     ...
+
 
 @overload
 def concrete(dt: time_t) -> time:
     ...
 
 
-def concrete(dt: datetime_t[None | _tzinfo] | date_t | time_t) -> datetime | date | time:
+def concrete(
+    dt: datetime_t[None | _tzinfo] | date_t | time_t,
+) -> datetime | date | time:
     if isinstance(dt, (date, time)):
         return dt
     else:

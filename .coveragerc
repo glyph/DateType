@@ -1,0 +1,17 @@
+[run]
+branch = True
+parallel = True
+include =
+   src/*
+   */site-packages/datetype/*
+
+[paths]
+source =
+   tubes
+   .tox/*/lib/python*/site-packages/datetype
+   .tox/*/Lib/site-packages/datetype
+   .tox/pypy*/site-packages/datetype
+
+[report]
+precision = 2
+ignore_errors = True
