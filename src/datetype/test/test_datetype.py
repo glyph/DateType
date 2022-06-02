@@ -15,6 +15,7 @@ class DateTypeTests(TestCase):
         """
         aware = Aware.now(timezone.utc)
         self.assertIsInstance(aware, datetime)
+        self.assertIsInstance(aware, Aware)
 
     def test_mypy_output(self) -> None:
         """

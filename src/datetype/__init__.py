@@ -1,11 +1,20 @@
 from __future__ import annotations
 
 import sys
+from datetime import date, datetime, time, timedelta, tzinfo as _tzinfo
 from time import struct_time
-from typing import ClassVar, NamedTuple, TypeVar, overload, Protocol
-from typing import cast, Any
+from typing import (
+    Any,
+    ClassVar,
+    NamedTuple,
+    Protocol,
+    TYPE_CHECKING,
+    TypeVar,
+    cast,
+    overload,
+    runtime_checkable,
+)
 
-from datetime import datetime, timedelta, tzinfo as _tzinfo, date, time
 
 _D = TypeVar("_D", bound="date_t")
 _GMaybeTZT = TypeVar("_GMaybeTZT", bound=None | _tzinfo, covariant=True)
@@ -438,7 +447,25 @@ class datetime_t(Protocol[_GMaybeTZDT]):
             ...
 
 
-class Naive(datetime_t[None], Protocol):
+if not TYPE_CHECKING:
+
+    class _CheckableProtocolMeta(type(Protocol)):
+        def __instancecheck__(self, instance: object) -> bool:
+            """
+            'Aware' objects are datetimes with a timezone.
+            """
+            return self._subclass_check_hook(instance)
+
+    class _CheckableProtocol(Protocol, metaclass=_CheckableProtocolMeta):
+        pass
+
+else:
+
+    class _CheckableProtocol(Protocol):
+        pass
+
+
+class Naive(datetime_t[None], _CheckableProtocol, Protocol):
 
     # Naive-*only* methods
     @classmethod
@@ -478,8 +505,14 @@ class Naive(datetime_t[None], Protocol):
     ) -> Naive:
         return as_naive(datetime.combine(concrete(date), concrete(time), _tzinfo))
 
+    if not TYPE_CHECKING:
 
-class Aware(datetime_t[_tzinfo], Protocol):
+        @classmethod
+        def _subclass_check_hook(cls, instance: object) -> bool:
+            return isinstance(instance, datetime) and instance.tzinfo is None
+
+
+class Aware(datetime_t[_tzinfo], _CheckableProtocol, Protocol):
     @classmethod
     def fromtimestamp(cls: type[Self], __timestamp: float, tz: _tzinfo) -> Aware:
         return as_aware(datetime.fromtimestamp(__timestamp, tz))
@@ -503,6 +536,12 @@ class Aware(datetime_t[_tzinfo], Protocol):
         cls, date: date_t, time: time_t[Any], _tzinfo: None | _tzinfo = None
     ) -> Aware:
         return as_aware(datetime.combine(concrete(date), concrete(time), _tzinfo))
+
+    if not TYPE_CHECKING:
+
+        @classmethod
+        def _subclass_check_hook(cls, instance: object) -> bool:
+            return isinstance(instance, datetime) and instance.tzinfo is not None
 
 
 # Parsers where the tzinfo is optionally embedded in the string cannot be
