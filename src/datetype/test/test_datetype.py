@@ -14,8 +14,13 @@ class DateTypeTests(TestCase):
         Some constructors.
         """
         aware = Aware.now(timezone.utc)
+        naive = Naive.now()
         self.assertIsInstance(aware, datetime)
         self.assertIsInstance(aware, Aware)
+        self.assertNotIsInstance(aware, Naive)
+        self.assertIsInstance(naive, datetime)
+        self.assertIsInstance(naive, Naive)
+        self.assertNotIsInstance(naive, Aware)
 
     def test_mypy_output(self) -> None:
         """
