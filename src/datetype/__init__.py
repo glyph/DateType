@@ -55,6 +55,7 @@ else:
         pass
 
 
+@runtime_checkable
 class Date(_CheckableProtocol, Protocol):
     @classmethod
     def _subclass_check_hook(cls, instance: object) -> bool:
@@ -314,6 +315,7 @@ class _GenericTime(Protocol[_GMaybeTZT]):
             return cast(NaiveTime | AwareTime, _time.fromisoformat(__time_string))
 
 
+@runtime_checkable
 class NaiveTime(_GenericTime[None], _CheckableProtocol, Protocol):
     """
     Time with a timezone.
@@ -326,6 +328,7 @@ class NaiveTime(_GenericTime[None], _CheckableProtocol, Protocol):
             return isinstance(instance, _time) and instance.tzinfo is None
 
 
+@runtime_checkable
 class AwareTime(_GenericTime[_tzinfo], _CheckableProtocol, Protocol):
     """
     Time without a timezone.
@@ -523,6 +526,7 @@ class _GenericDateTime(Protocol[_GMaybeTZDT]):
             ...
 
 
+@runtime_checkable
 class NaiveDateTime(_GenericDateTime[None], _CheckableProtocol, Protocol):
     def timetz(self) -> NaiveTime:
         ...
@@ -576,6 +580,7 @@ class NaiveDateTime(_GenericDateTime[None], _CheckableProtocol, Protocol):
             return isinstance(instance, _datetime) and instance.tzinfo is None
 
 
+@runtime_checkable
 class AwareDateTime(_GenericDateTime[_tzinfo], _CheckableProtocol, Protocol):
     def timetz(self) -> AwareDateTime:
         ...

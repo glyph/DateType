@@ -2,6 +2,7 @@ from unittest import TestCase
 from datetype import AwareDateTime, NaiveDateTime
 from datetime import datetime, timezone
 from os import popen
+from typing import runtime_checkable
 
 
 class DateTypeTests(TestCase):
