@@ -1,5 +1,5 @@
 from unittest import TestCase
-from datetype import Aware, Naive
+from datetype import AwareDateTime, NaiveDateTime
 from datetime import datetime, timezone
 from os import popen
 
@@ -13,14 +13,14 @@ class DateTypeTests(TestCase):
         """
         Some constructors.
         """
-        aware = Aware.now(timezone.utc)
-        naive = Naive.now()
+        aware = AwareDateTime.now(timezone.utc)
+        naive = NaiveDateTime.now()
         self.assertIsInstance(aware, datetime)
-        self.assertIsInstance(aware, Aware)
-        self.assertNotIsInstance(aware, Naive)
+        self.assertIsInstance(aware, AwareDateTime)
+        self.assertNotIsInstance(aware, NaiveDateTime)
         self.assertIsInstance(naive, datetime)
-        self.assertIsInstance(naive, Naive)
-        self.assertNotIsInstance(naive, Aware)
+        self.assertIsInstance(naive, NaiveDateTime)
+        self.assertNotIsInstance(naive, AwareDateTime)
 
     def test_mypy_output(self) -> None:
         """

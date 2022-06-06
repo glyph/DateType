@@ -21,12 +21,13 @@ from typing import (
     runtime_checkable,
 )
 
-
 _D = TypeVar("_D", bound="Date")
 _GMaybeTZT = TypeVar("_GMaybeTZT", bound=None | _tzinfo, covariant=True)
 _GMaybeTZDT = TypeVar("_GMaybeTZDT", bound=None | _tzinfo, covariant=True)
 _PMaybeTZ = TypeVar("_PMaybeTZ", bound=None | _tzinfo)
 Self = TypeVar("Self")
+AnyDateTime = TypeVar("AnyDateTime", "AwareDateTime", "NaiveDateTime")
+AnyTime = TypeVar("AnyTime", "AwareTime", "NaiveTime")
 
 if sys.version_info >= (3, 9):
 
