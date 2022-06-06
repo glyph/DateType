@@ -1,33 +1,39 @@
 from typing import cast
-from datetime import datetime, timezone, date
-from datetype import date_t, as_naive, as_aware, date_only, Naive, Aware, time_t
+from datetime import datetime, timezone, date, time
+from datetype import (
+    Date,
+    naive,
+    aware,
+    date_only,
+    NaiveDateTime,
+    AwareDateTime,
+    NaiveTime,
+    AwareTime,
+)
 
-# success
-x: Naive = as_naive(datetime.now())
-y: Aware = as_aware(datetime.now(timezone.utc))
-x < x
-y > y
+x: NaiveDateTime = naive(datetime.now())  # ok
+y: AwareDateTime = aware(datetime.now(timezone.utc))  # ok
+x < x  # ok
+y > y  # ok
 
-# error: we can't compare naive and aware
-x < y
+x < y  # error: we can't compare naive and aware
 
-# error: it's aware and we want naive
-a: Naive = as_aware(datetime.now(timezone.utc))
-b: Aware = as_naive(datetime.now(timezone.utc))
+a: NaiveDateTime = aware(  # error: it's aware and we want naive
+    datetime.now(timezone.utc)
+)
+b: AwareDateTime = naive(  # error: it's naive and we want aware
+    datetime.now(timezone.utc)
+)
 
-# success
-adate: date_t = date_only(date.today())
+adate: Date = date_only(date.today())  # success
+bdate: Date = date_only(datetime.now(timezone.utc))  # runtime error only, sadly
 
-# runtime error only, sadly
-bdate: date_t = date_only(datetime.now(timezone.utc))
 
-# error because once we're in more-strictly-typed we can prevent confusion
-cdate: date_t = a
-ddate: date_t = b
+cdate: Date = a  # error because datetimes aren't dates
+ddate: Date = b  # error for aware too
 
-sometime: time_t[None] = cast(time_t[None], None)
+naive_time: NaiveTime = naive(time(0))
+aware_time: AwareTime = aware(time(0))
 
-what = Aware.combine(cdate, sometime)
-
-reveal_type(what)
-
+AwareDateTime.combine(cdate, naive_time)  # error because sometime is naive
+AwareDateTime.combine(cdate, aware_time)  # ok because b is aware

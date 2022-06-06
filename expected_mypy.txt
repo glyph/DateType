@@ -1,60 +1,62 @@
-tryit.py:12: error: Unsupported operand types for < ("Naive" and "Aware")
-tryit.py:12: note: "Aware" is missing following "Naive" protocol members:
-tryit.py:12: note:     utcfromtimestamp, utcnow
-tryit.py:12: note: Following member(s) of "Aware" have conflicts:
-tryit.py:12: note:     Expected:
-tryit.py:12: note:         @overload
-tryit.py:12: note:         def combine(cls, date: date_t, time: time_t[Any], _tzinfo: None) -> Naive
-tryit.py:12: note:         @overload
-tryit.py:12: note:         def combine(cls, date: date_t, time: time_t[None]) -> Naive
-tryit.py:12: note:     Got:
-tryit.py:12: note:         @overload
-tryit.py:12: note:         def combine(cls, date: date_t, time: time_t[Any], _tzinfo: tzinfo) -> Aware
-tryit.py:12: note:         @overload
-tryit.py:12: note:         def combine(cls, date: date_t, time: time_t[tzinfo]) -> Aware
-tryit.py:12: note:     Expected:
-tryit.py:12: note:         def fromtimestamp(cls, float, tz: None = ...) -> Naive
-tryit.py:12: note:     Got:
-tryit.py:12: note:         def fromtimestamp(cls, float, tz: tzinfo) -> Aware
-tryit.py:12: note:     <3 more conflict(s) not shown>
-tryit.py:15: error: Incompatible types in assignment (expression has type "Aware", variable has type "Naive")
-tryit.py:15: note: "Aware" is missing following "Naive" protocol members:
-tryit.py:15: note:     utcfromtimestamp, utcnow
-tryit.py:15: note: Following member(s) of "Aware" have conflicts:
-tryit.py:15: note:     Expected:
-tryit.py:15: note:         @overload
-tryit.py:15: note:         def combine(cls, date: date_t, time: time_t[Any], _tzinfo: None) -> Naive
-tryit.py:15: note:         @overload
-tryit.py:15: note:         def combine(cls, date: date_t, time: time_t[None]) -> Naive
-tryit.py:15: note:     Got:
-tryit.py:15: note:         @overload
-tryit.py:15: note:         def combine(cls, date: date_t, time: time_t[Any], _tzinfo: tzinfo) -> Aware
-tryit.py:15: note:         @overload
-tryit.py:15: note:         def combine(cls, date: date_t, time: time_t[tzinfo]) -> Aware
-tryit.py:15: note:     Expected:
-tryit.py:15: note:         def fromtimestamp(cls, float, tz: None = ...) -> Naive
-tryit.py:15: note:     Got:
-tryit.py:15: note:         def fromtimestamp(cls, float, tz: tzinfo) -> Aware
-tryit.py:15: note:     <3 more conflict(s) not shown>
-tryit.py:16: error: Incompatible types in assignment (expression has type "Naive", variable has type "Aware")
-tryit.py:16: note: Following member(s) of "Naive" have conflicts:
-tryit.py:16: note:     Expected:
-tryit.py:16: note:         @overload
-tryit.py:16: note:         def combine(cls, date: date_t, time: time_t[Any], _tzinfo: tzinfo) -> Aware
-tryit.py:16: note:         @overload
-tryit.py:16: note:         def combine(cls, date: date_t, time: time_t[tzinfo]) -> Aware
-tryit.py:16: note:     Got:
-tryit.py:16: note:         @overload
-tryit.py:16: note:         def combine(cls, date: date_t, time: time_t[Any], _tzinfo: None) -> Naive
-tryit.py:16: note:         @overload
-tryit.py:16: note:         def combine(cls, date: date_t, time: time_t[None]) -> Naive
-tryit.py:16: note:     Expected:
-tryit.py:16: note:         def fromtimestamp(cls, float, tz: tzinfo) -> Aware
-tryit.py:16: note:     Got:
-tryit.py:16: note:         def fromtimestamp(cls, float, tz: None = ...) -> Naive
-tryit.py:16: note:     <3 more conflict(s) not shown>
-tryit.py:25: error: Incompatible types in assignment (expression has type "Naive", variable has type "date_t")
-tryit.py:26: error: Incompatible types in assignment (expression has type "Aware", variable has type "date_t")
-tryit.py:30: error: Argument 2 to "combine" of "Aware" has incompatible type "time_t[None]"; expected "time_t[tzinfo]"
-tryit.py:32: note: Revealed type is "datetype.Aware"
+tryit.py:19: error: Unsupported operand types for < ("NaiveDateTime" and "AwareDateTime")
+tryit.py:19: note: "AwareDateTime" is missing following "NaiveDateTime" protocol members:
+tryit.py:19: note:     utcfromtimestamp, utcnow
+tryit.py:19: note: Following member(s) of "AwareDateTime" have conflicts:
+tryit.py:19: note:     Expected:
+tryit.py:19: note:         @overload
+tryit.py:19: note:         def combine(cls, date: Date, time: Union[NaiveTime, AwareTime], tzinfo: None) -> NaiveDateTime
+tryit.py:19: note:         @overload
+tryit.py:19: note:         def combine(cls, date: Date, time: NaiveTime) -> NaiveDateTime
+tryit.py:19: note:     Got:
+tryit.py:19: note:         @overload
+tryit.py:19: note:         def combine(cls, date: Date, time: Union[NaiveTime, AwareTime], tzinfo: tzinfo) -> AwareDateTime
+tryit.py:19: note:         @overload
+tryit.py:19: note:         def combine(cls, date: Date, time: AwareTime) -> AwareDateTime
+tryit.py:19: note:     Expected:
+tryit.py:19: note:         def fromtimestamp(cls, float, tz: None = ...) -> NaiveDateTime
+tryit.py:19: note:     Got:
+tryit.py:19: note:         def fromtimestamp(cls, float, tz: tzinfo) -> AwareDateTime
+tryit.py:19: note:     <3 more conflict(s) not shown>
+tryit.py:21: error: Incompatible types in assignment (expression has type "AwareDateTime", variable has type "NaiveDateTime")
+tryit.py:21: note: "AwareDateTime" is missing following "NaiveDateTime" protocol members:
+tryit.py:21: note:     utcfromtimestamp, utcnow
+tryit.py:21: note: Following member(s) of "AwareDateTime" have conflicts:
+tryit.py:21: note:     Expected:
+tryit.py:21: note:         @overload
+tryit.py:21: note:         def combine(cls, date: Date, time: Union[NaiveTime, AwareTime], tzinfo: None) -> NaiveDateTime
+tryit.py:21: note:         @overload
+tryit.py:21: note:         def combine(cls, date: Date, time: NaiveTime) -> NaiveDateTime
+tryit.py:21: note:     Got:
+tryit.py:21: note:         @overload
+tryit.py:21: note:         def combine(cls, date: Date, time: Union[NaiveTime, AwareTime], tzinfo: tzinfo) -> AwareDateTime
+tryit.py:21: note:         @overload
+tryit.py:21: note:         def combine(cls, date: Date, time: AwareTime) -> AwareDateTime
+tryit.py:21: note:     Expected:
+tryit.py:21: note:         def fromtimestamp(cls, float, tz: None = ...) -> NaiveDateTime
+tryit.py:21: note:     Got:
+tryit.py:21: note:         def fromtimestamp(cls, float, tz: tzinfo) -> AwareDateTime
+tryit.py:21: note:     <3 more conflict(s) not shown>
+tryit.py:24: error: Incompatible types in assignment (expression has type "NaiveDateTime", variable has type "AwareDateTime")
+tryit.py:24: note: Following member(s) of "NaiveDateTime" have conflicts:
+tryit.py:24: note:     Expected:
+tryit.py:24: note:         @overload
+tryit.py:24: note:         def combine(cls, date: Date, time: Union[NaiveTime, AwareTime], tzinfo: tzinfo) -> AwareDateTime
+tryit.py:24: note:         @overload
+tryit.py:24: note:         def combine(cls, date: Date, time: AwareTime) -> AwareDateTime
+tryit.py:24: note:     Got:
+tryit.py:24: note:         @overload
+tryit.py:24: note:         def combine(cls, date: Date, time: Union[NaiveTime, AwareTime], tzinfo: None) -> NaiveDateTime
+tryit.py:24: note:         @overload
+tryit.py:24: note:         def combine(cls, date: Date, time: NaiveTime) -> NaiveDateTime
+tryit.py:24: note:     Expected:
+tryit.py:24: note:         def fromtimestamp(cls, float, tz: tzinfo) -> AwareDateTime
+tryit.py:24: note:     Got:
+tryit.py:24: note:         def fromtimestamp(cls, float, tz: None = ...) -> NaiveDateTime
+tryit.py:24: note:     <3 more conflict(s) not shown>
+tryit.py:32: error: Incompatible types in assignment (expression has type "NaiveDateTime", variable has type "Date")
+tryit.py:33: error: Incompatible types in assignment (expression has type "AwareDateTime", variable has type "Date")
+tryit.py:38: error: No overload variant of "combine" of "AwareDateTime" matches argument types "Date", "NaiveTime"
+tryit.py:38: note: Possible overload variants:
+tryit.py:38: note:     def combine(cls, date: Date, time: Union[NaiveTime, AwareTime], tzinfo: tzinfo) -> AwareDateTime
+tryit.py:38: note:     def combine(cls, date: Date, time: AwareTime) -> AwareDateTime
 Found 6 errors in 1 file (checked 1 source file)
