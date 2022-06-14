@@ -318,7 +318,7 @@ class _GenericTime(Protocol[_GMaybeTZT]):
 @runtime_checkable
 class NaiveTime(_GenericTime[None], _CheckableProtocol, Protocol):
     """
-    Time with a timezone.
+    Time without a timezone.
     """
 
     if not TYPE_CHECKING:
@@ -331,7 +331,7 @@ class NaiveTime(_GenericTime[None], _CheckableProtocol, Protocol):
 @runtime_checkable
 class AwareTime(_GenericTime[_tzinfo], _CheckableProtocol, Protocol):
     """
-    Time without a timezone.
+    Time with a timezone.
     """
 
     if not TYPE_CHECKING:
