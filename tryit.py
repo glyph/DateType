@@ -1,5 +1,5 @@
 from typing import cast
-from datetime import datetime, timezone, date, time
+from datetime import datetime, timezone, date, time, timedelta
 from datetype import (
     Date,
     naive,
@@ -75,3 +75,18 @@ def try_date_time_timetz_methods() -> None:
 
 
 try_date_time_timetz_methods()
+
+
+def try_timedelta_relativedelta() -> None:
+    from dateutil.relativedelta import relativedelta
+
+    date1: Date = Date.today()  # ok
+
+    date2a: Date = date1 + timedelta(days=1)  # ok
+    date2b: Date = timedelta(days=1) + date1  # ok
+
+    date3a: Date = date1 + relativedelta(days=1)  # ok
+    date3b: Date = relativedelta(days=1) + date1  # ok
+
+
+try_timedelta_relativedelta()

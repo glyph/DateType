@@ -15,11 +15,18 @@ from typing import (
     NamedTuple,
     Protocol,
     TYPE_CHECKING,
+    TypeAlias,
     TypeVar,
     cast,
     overload,
     runtime_checkable,
 )
+
+try:
+    from dateutil.relativedelta import relativedelta as _relativedelta
+except ImportError:
+    if not TYPE_CHECKING:
+        _relativedelta: TypeAlias = "_relativedelta"
 
 _D = TypeVar("_D", bound="Date")
 _GMaybeTZT = TypeVar("_GMaybeTZT", bound=None | _tzinfo, covariant=True)
@@ -28,6 +35,7 @@ _PMaybeTZ = TypeVar("_PMaybeTZ", bound=None | _tzinfo)
 Self = TypeVar("Self")
 AnyDateTime = TypeVar("AnyDateTime", "AwareDateTime", "NaiveDateTime")
 AnyTime = TypeVar("AnyTime", "AwareTime", "NaiveTime")
+AnyTimeDelta = TypeVar("AnyTimeDelta", _timedelta, _relativedelta)
 
 if sys.version_info >= (3, 9):
 
@@ -136,14 +144,14 @@ class Date(_CheckableProtocol, Protocol):
 
     if sys.version_info >= (3, 8):
 
-        def __add__(self: Self, __other: _timedelta) -> Self:
+        def __add__(self: Self, __other: AnyTimeDelta) -> Self:
             ...
 
-        def __radd__(self: Self, __other: _timedelta) -> Self:
+        def __radd__(self: _D, __other: AnyTimeDelta) -> _D:
             ...
 
         @overload
-        def __sub__(self: Self, __other: _timedelta) -> Self:
+        def __sub__(self: Self, __other: AnyTimeDelta) -> Self:
             ...
 
         @overload
@@ -152,14 +160,14 @@ class Date(_CheckableProtocol, Protocol):
 
     else:
         # Prior to Python 3.8, arithmetic operations always returned `_date`, even in subclasses
-        def __add__(self, __other: _timedelta) -> Date:
+        def __add__(self, __other: AnyTimeDelta) -> Date:
             ...
 
-        def __radd__(self, __other: _timedelta) -> Date:
+        def __radd__(self, __other: AnyTimeDelta) -> Date:
             ...
 
         @overload
-        def __sub__(self, __other: _timedelta) -> Date:
+        def __sub__(self, __other: AnyTimeDelta) -> Date:
             ...
 
     def __hash__(self) -> int:
@@ -505,17 +513,17 @@ class _GenericDateTime(Protocol[_GMaybeTZDT]):
         ...
 
     @overload
-    def __sub__(self: Self, __other: _timedelta) -> Self:
+    def __sub__(self: Self, __other: AnyTimeDelta) -> Self:
         ...
 
     @overload
     def __sub__(self: DTSelf, __other: DTSelf) -> _timedelta:
         ...
 
-    def __add__(self: Self, __other: _timedelta) -> Self:
+    def __add__(self: DTSelf, __other: AnyTimeDelta) -> DTSelf:
         ...
 
-    def __radd__(self: Self, __other_t: _timedelta) -> Self:
+    def __radd__(self: DTSelf, __other_t: AnyTimeDelta) -> DTSelf:
         ...
 
     if sys.version_info >= (3, 9):
