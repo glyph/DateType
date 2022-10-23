@@ -59,4 +59,10 @@ tryit.py:38: error: No overload variant of "combine" of "AwareDateTime" matches 
 tryit.py:38: note: Possible overload variants:
 tryit.py:38: note:     def combine(cls, date: Date, time: Union[NaiveTime, AwareTime], tzinfo: tzinfo) -> AwareDateTime
 tryit.py:38: note:     def combine(cls, date: Date, time: AwareTime) -> AwareDateTime
-Found 6 errors in 1 file (checked 1 source file)
+tryit.py:73: error: Incompatible types in assignment (expression has type "NaiveTime", variable has type "AwareTime")
+tryit.py:73: note: Following member(s) of "NaiveTime" have conflicts:
+tryit.py:73: note:     tzinfo: expected "tzinfo", got "None"
+tryit.py:74: error: Incompatible types in assignment (expression has type "NaiveTime", variable has type "AwareTime")
+tryit.py:74: note: Following member(s) of "NaiveTime" have conflicts:
+tryit.py:74: note:     tzinfo: expected "tzinfo", got "None"
+Found 8 errors in 1 file (checked 1 source file)

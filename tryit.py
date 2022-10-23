@@ -55,3 +55,23 @@ def try_nested_composition() -> None:
 
 
 try_nested_composition()
+
+
+def try_date_time_timetz_methods() -> None:
+    naive_dt = naive(datetime.now())
+    aware_dt = aware(datetime.now(timezone.utc))
+
+    date1: Date = naive_dt.date()  # ok
+    date2: Date = aware_dt.date()  # ok
+
+    naive_time: NaiveTime = naive_dt.time()  # ok
+    naive_timetz: NaiveTime = naive_dt.timetz()  # ok
+
+    aware_time: NaiveTime = aware_dt.time()  # ok
+    aware_timetz: AwareTime = aware_dt.timetz()  # ok
+
+    err1: AwareTime = naive_dt.timetz()  # error: it's naive & we want aware
+    err2: AwareTime = aware_dt.time()  # error: it's naive & we want aware
+
+
+try_date_time_timetz_methods()

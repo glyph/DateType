@@ -377,10 +377,10 @@ class _GenericDateTime(Protocol[_GMaybeTZDT]):
     def utctimetuple(self) -> struct_time:
         ...
 
-    def _date(self) -> Date:
+    def date(self) -> Date:
         ...
 
-    def time(self) -> NaiveDateTime:
+    def time(self) -> NaiveTime:
         ...
 
     @overload
@@ -585,7 +585,7 @@ class NaiveDateTime(_GenericDateTime[None], _CheckableProtocol, Protocol):
 
 @runtime_checkable
 class AwareDateTime(_GenericDateTime[_tzinfo], _CheckableProtocol, Protocol):
-    def timetz(self) -> AwareDateTime:
+    def timetz(self) -> AwareTime:
         ...
 
     @classmethod
