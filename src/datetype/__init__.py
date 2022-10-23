@@ -480,6 +480,9 @@ class _GenericDateTime(Protocol[_GMaybeTZDT]):
     def isoformat(self, sep: str = ..., timespec: str = ...) -> str:
         ...
 
+    def strftime(self, __format: str) -> str:
+        ...
+
     def utcoffset(self) -> _timedelta | None:
         ...
 
