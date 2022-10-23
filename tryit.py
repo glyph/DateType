@@ -32,8 +32,8 @@ bdate: Date = date_only(datetime.now(timezone.utc))  # runtime error only, sadly
 cdate: Date = a  # error because datetimes aren't dates
 ddate: Date = b  # error for aware too
 
-naive_time: NaiveTime = naive(time(0))
-aware_time: AwareTime = aware(time(0))
+naive_time: NaiveTime = naive(time(0))  # ok
+aware_time: AwareTime = aware(time(0))  # error
 
 AwareDateTime.combine(cdate, naive_time)  # error because sometime is naive
 AwareDateTime.combine(cdate, aware_time)  # ok because b is aware
