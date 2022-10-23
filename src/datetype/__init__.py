@@ -641,6 +641,8 @@ if sys.version_info >= (3, 7):
 def date_only(d: _date | Date) -> Date:
     if isinstance(d, _datetime):
         raise TypeError(f"{type(d)} is a datetime, not a date")
+    elif not isinstance(d, Date):
+        raise TypeError(f"{type(d)} is not a date")
     return cast(Date, d)
 
 
@@ -657,8 +659,10 @@ def aware(t: _time | AwareTime) -> AwareTime:
 def aware(
     t: _datetime | _time | AwareDateTime | AwareTime,
 ) -> AwareDateTime | AwareTime:
-    if t.tzinfo is None:
-        raise TypeError(f"{t} is naive, not aware")
+    if not isinstance(t, (AwareDateTime, AwareTime)):
+        if hasattr(t, "tzinfo") and t.tzinfo is None:
+            raise TypeError(f"{t} is naive, not aware")
+        raise TypeError(f"expected tz-aware datetime or tz-aware time: {t}")
     return cast(AwareDateTime, t)
 
 
@@ -675,8 +679,10 @@ def naive(t: _time | NaiveTime) -> NaiveTime:
 def naive(
     t: _datetime | _time | NaiveDateTime | NaiveTime,
 ) -> NaiveDateTime | NaiveTime:
-    if t.tzinfo is not None:
-        raise TypeError(f"{t} is aware, not naive")
+    if not isinstance(t, (NaiveDateTime, NaiveTime)):
+        if getattr(t, "tzinfo", None) is not None:
+            raise TypeError(f"{t} is aware, not naive")
+        raise TypeError(f"expected naive datetime or naive time: {t}")
     return cast(NaiveDateTime, t)
 
 

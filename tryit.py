@@ -26,7 +26,7 @@ b: AwareDateTime = naive(  # error: it's naive and we want aware
 )
 
 adate: Date = date_only(date.today())  # success
-bdate: Date = date_only(datetime.now(timezone.utc))  # runtime error only, sadly
+bdate: Date = date_only(datetime.now(timezone.utc))  # error: datetime is not a Date
 
 
 cdate: Date = a  # error because datetimes aren't dates
