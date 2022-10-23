@@ -638,39 +638,43 @@ if sys.version_info >= (3, 7):
         return cast(NaiveDateTime, _datetime.fromisoformat(__date_string))
 
 
-def date_only(d: _date) -> Date:
+def date_only(d: _date | Date) -> Date:
     if isinstance(d, _datetime):
         raise TypeError(f"{type(d)} is a datetime, not a date")
     return cast(Date, d)
 
 
 @overload
-def aware(t: _datetime) -> AwareDateTime:
+def aware(t: _datetime | AwareDateTime) -> AwareDateTime:
     ...
 
 
 @overload
-def aware(t: _time) -> AwareTime:
+def aware(t: _time | AwareTime) -> AwareTime:
     ...
 
 
-def aware(t: _datetime | _time) -> AwareDateTime | AwareTime:
+def aware(
+    t: _datetime | _time | AwareDateTime | AwareTime,
+) -> AwareDateTime | AwareTime:
     if t.tzinfo is None:
         raise TypeError(f"{t} is naive, not aware")
     return cast(AwareDateTime, t)
 
 
 @overload
-def naive(t: _datetime) -> NaiveDateTime:
+def naive(t: _datetime | NaiveDateTime) -> NaiveDateTime:
     ...
 
 
 @overload
-def naive(t: _time) -> NaiveTime:
+def naive(t: _time | NaiveTime) -> NaiveTime:
     ...
 
 
-def naive(t: _datetime | _time) -> NaiveDateTime | NaiveTime:
+def naive(
+    t: _datetime | _time | NaiveDateTime | NaiveTime,
+) -> NaiveDateTime | NaiveTime:
     if t.tzinfo is not None:
         raise TypeError(f"{t} is aware, not naive")
     return cast(NaiveDateTime, t)
