@@ -15,19 +15,25 @@ from typing import (
     NamedTuple,
     Protocol,
     TYPE_CHECKING,
+    Type,
     TypeVar,
     cast,
     overload,
     runtime_checkable,
 )
 
+
 _D = TypeVar("_D", bound="Date")
 _GMaybeTZT = TypeVar("_GMaybeTZT", bound=None | _tzinfo, covariant=True)
 _GMaybeTZDT = TypeVar("_GMaybeTZDT", bound=None | _tzinfo, covariant=True)
 _PMaybeTZ = TypeVar("_PMaybeTZ", bound=None | _tzinfo)
+_FuncTZ = TypeVar("_FuncTZ", bound=_tzinfo)
+_FuncOptionalTZ = TypeVar("_FuncOptionalTZ", bound=None | _tzinfo)
+
+
 Self = TypeVar("Self")
-AnyDateTime = TypeVar("AnyDateTime", "AwareDateTime", "NaiveDateTime")
-AnyTime = TypeVar("AnyTime", "AwareTime", "NaiveTime")
+AnyDateTime = TypeVar("AnyDateTime", bound="DateTime[_tzinfo | None]")
+AnyTime = TypeVar("AnyTime", bound="Time[_tzinfo | None]")
 
 if sys.version_info >= (3, 9):
 
@@ -57,6 +63,13 @@ else:
 
 @runtime_checkable
 class Date(_CheckableProtocol, Protocol):
+    """
+    A protocol that describes L{datetime.date}.
+
+    (This is really just a copy of the stub for L{datetime.date} but is
+    necessary to make it a C{Protocol}.)
+    """
+
     @classmethod
     def _subclass_check_hook(cls, instance: object) -> bool:
         return type(instance) is _date
@@ -182,9 +195,9 @@ class Date(_CheckableProtocol, Protocol):
             ...
 
 
-class _GenericTime(Protocol[_GMaybeTZT]):
-    min: ClassVar[NaiveDateTime]
-    max: ClassVar[NaiveDateTime]
+class Time(Protocol[_GMaybeTZT]):
+    min: ClassVar[Time[None]]
+    max: ClassVar[Time[None]]
     resolution: ClassVar[_timedelta]
 
     @property
@@ -264,9 +277,9 @@ class _GenericTime(Protocol[_GMaybeTZT]):
         second: int = ...,
         microsecond: int = ...,
         *,
-        tzinfo: _tzinfo,
+        tzinfo: _FuncTZ,
         fold: int = ...,
-    ) -> AwareTime:
+    ) -> Time[_FuncTZ]:
         ...
 
     @overload
@@ -279,7 +292,7 @@ class _GenericTime(Protocol[_GMaybeTZT]):
         *,
         tzinfo: None,
         fold: int = ...,
-    ) -> NaiveTime:
+    ) -> Time[None]:
         ...
 
     @overload
@@ -292,7 +305,7 @@ class _GenericTime(Protocol[_GMaybeTZT]):
         tzinfo: None,
         *,
         fold: int,
-    ) -> NaiveTime:
+    ) -> Time[None]:
         ...
 
     @overload
@@ -302,21 +315,21 @@ class _GenericTime(Protocol[_GMaybeTZT]):
         minute: int,
         second: int,
         microsecond: int,
-        tzinfo: _tzinfo,
+        tzinfo: _FuncTZ,
         *,
         fold: int,
-    ) -> AwareTime:
+    ) -> Time[_FuncTZ]:
         ...
 
     if sys.version_info >= (3, 7):
 
         @classmethod
-        def fromisoformat(cls, __time_string: str) -> NaiveTime | AwareTime:
-            return cast(NaiveTime | AwareTime, _time.fromisoformat(__time_string))
+        def fromisoformat(cls, __time_string: str) -> Time[None | _tzinfo]:
+            return cast(Time[Any], _time.fromisoformat(__time_string))
 
 
 @runtime_checkable
-class NaiveTime(_GenericTime[None], _CheckableProtocol, Protocol):
+class NaiveTime(Time[None], _CheckableProtocol, Protocol):
     """
     Time without a timezone.
     """
@@ -329,7 +342,7 @@ class NaiveTime(_GenericTime[None], _CheckableProtocol, Protocol):
 
 
 @runtime_checkable
-class AwareTime(_GenericTime[_tzinfo], _CheckableProtocol, Protocol):
+class AwareTime(Time[_tzinfo], _CheckableProtocol, Protocol):
     """
     Time with a timezone.
     """
@@ -341,10 +354,10 @@ class AwareTime(_GenericTime[_tzinfo], _CheckableProtocol, Protocol):
             return isinstance(instance, _time) and instance.tzinfo is not None
 
 
-DTSelf = TypeVar("DTSelf", bound="_GenericDateTime")
+DTSelf = TypeVar("DTSelf", bound="DateTime")
 
 
-class _GenericDateTime(Protocol[_GMaybeTZDT]):
+class DateTime(Protocol[_GMaybeTZDT]):
     resolution: ClassVar[_timedelta]
 
     @property
@@ -385,7 +398,7 @@ class _GenericDateTime(Protocol[_GMaybeTZDT]):
 
     @overload
     def replace(
-        self,
+        self: Self,
         year: int = ...,
         month: int = ...,
         day: int = ...,
@@ -394,9 +407,9 @@ class _GenericDateTime(Protocol[_GMaybeTZDT]):
         second: int = ...,
         microsecond: int = ...,
         *,
-        tzinfo: _tzinfo,
+        tzinfo: _FuncTZ,
         fold: int = ...,
-    ) -> AwareDateTime:
+    ) -> DateTime[_FuncTZ]:
         ...
 
     @overload
@@ -409,10 +422,10 @@ class _GenericDateTime(Protocol[_GMaybeTZDT]):
         minute: int,
         second: int,
         microsecond: int,
-        tzinfo: _tzinfo,
+        tzinfo: _FuncTZ,
         *,
         fold: int,
-    ) -> AwareDateTime:
+    ) -> DateTime[_FuncTZ]:
         ...
 
     @overload
@@ -462,16 +475,7 @@ class _GenericDateTime(Protocol[_GMaybeTZDT]):
     ) -> Self:
         "If no replacement tz is specified then we inherit"
 
-    @overload
-    def astimezone(self, tz: _tzinfo) -> AwareDateTime:
-        ...
-
-    @overload
-    def astimezone(self, tz: None) -> NaiveDateTime:
-        ...
-
-    @overload
-    def astimezone(self: Self) -> Self:
+    def astimezone(self, tz: _FuncTZ) -> DateTime[_FuncTZ]:
         ...
 
     def ctime(self) -> str:
@@ -525,54 +529,63 @@ class _GenericDateTime(Protocol[_GMaybeTZDT]):
         def isocalendar(self) -> tuple[int, int, int]:
             ...
 
-
-@runtime_checkable
-class NaiveDateTime(_GenericDateTime[None], _CheckableProtocol, Protocol):
-    def timetz(self) -> NaiveTime:
+    def timetz(self) -> DateTime[_GMaybeTZDT]:
         ...
-
-    # NaiveDateTime-*only* methods
-    @classmethod
-    def utcfromtimestamp(cls: type[Self], __t: float) -> NaiveDateTime:
-        return naive(_datetime.utcfromtimestamp(__t))
-
-    @classmethod
-    def utcnow(cls: type[Self]) -> NaiveDateTime:
-        return naive(_datetime.utcnow())
-
-    # Common Methods
 
     @classmethod
     def fromtimestamp(
-        cls: type[Self], __timestamp: float, tz: None = None
-    ) -> NaiveDateTime:
-        return naive(_datetime.fromtimestamp(__timestamp, tz))
-
-    @classmethod
-    def now(
-        cls: type[Self],
-        tz: None = None,
-    ) -> NaiveDateTime:
-        return naive(_datetime.now(tz))
+        cls: type[Self], __timestamp: float, tz: _FuncOptionalTZ
+    ) -> DateTime[_FuncOptionalTZ]:
+        result = _datetime.fromtimestamp(__timestamp, tz)
+        return result  # type: ignore[return-value]
 
     @overload
     @classmethod
-    def combine(
-        cls, date: Date, time: NaiveTime | AwareTime, tzinfo: None
-    ) -> NaiveDateTime:
+    def now(cls, tz: _FuncOptionalTZ) -> DateTime[_FuncOptionalTZ]:
         ...
 
     @overload
     @classmethod
-    def combine(cls, date: Date, time: NaiveTime) -> NaiveDateTime:
+    def now(cls) -> DateTime[None]:
+        ...
+
+    @classmethod
+    def now(cls, tz: _tzinfo | None = None) -> DateTime[None | _tzinfo]:
+        return _datetime.now(tz)  # type: ignore[return-value]
+
+    @overload
+    @classmethod
+    def combine(
+        cls, date: Date, time: Time[_FuncOptionalTZ]
+    ) -> DateTime[_FuncOptionalTZ]:
+        ...
+
+    @overload
+    @classmethod
+    def combine(
+        cls, date: Date, time: Time[_tzinfo | None], tzinfo: _FuncOptionalTZ
+    ) -> DateTime[_FuncOptionalTZ]:
         ...
 
     @classmethod
     def combine(
-        cls, date: Date, time: NaiveTime | AwareTime, tzinfo: None | _tzinfo = None
-    ) -> NaiveDateTime:
-        return naive(_datetime.combine(concrete(date), concrete(time), tzinfo))
+        cls, date: Date, time: Time[_tzinfo | None], tzinfo: _tzinfo | None = None
+    ) -> DateTime[_tzinfo | None]:
+        return _datetime.combine(
+            concrete(date), concrete(time), tzinfo
+        )  # type:ignore[return-value]
 
+    @classmethod
+    def utcfromtimestamp(cls: type[Self], __t: float) -> DateTime[None]:
+        return naive(_datetime.utcfromtimestamp(__t))
+
+    @classmethod
+    def utcnow(cls: type[Self]) -> DateTime[None]:
+        return naive(_datetime.utcnow())
+
+
+@runtime_checkable
+class NaiveDateTime(DateTime[None], _CheckableProtocol, Protocol):
     if not TYPE_CHECKING:
 
         @classmethod
@@ -581,38 +594,7 @@ class NaiveDateTime(_GenericDateTime[None], _CheckableProtocol, Protocol):
 
 
 @runtime_checkable
-class AwareDateTime(_GenericDateTime[_tzinfo], _CheckableProtocol, Protocol):
-    def timetz(self) -> AwareDateTime:
-        ...
-
-    @classmethod
-    def fromtimestamp(
-        cls: type[Self], __timestamp: float, tz: _tzinfo
-    ) -> AwareDateTime:
-        return aware(_datetime.fromtimestamp(__timestamp, tz))
-
-    @classmethod
-    def now(cls, tz: _tzinfo) -> AwareDateTime:
-        return aware(_datetime.now(tz))
-
-    @overload
-    @classmethod
-    def combine(
-        cls, date: Date, time: NaiveTime | AwareTime, tzinfo: _tzinfo
-    ) -> AwareDateTime:
-        ...
-
-    @overload
-    @classmethod
-    def combine(cls, date: Date, time: AwareTime) -> AwareDateTime:
-        ...
-
-    @classmethod
-    def combine(
-        cls, date: Date, time: NaiveTime | AwareTime, tzinfo: None | _tzinfo = None
-    ) -> AwareDateTime:
-        return aware(_datetime.combine(concrete(date), concrete(time), tzinfo))
-
+class AwareDateTime(DateTime[_tzinfo], _CheckableProtocol, Protocol):
     if not TYPE_CHECKING:
 
         @classmethod
@@ -625,13 +607,13 @@ class AwareDateTime(_GenericDateTime[_tzinfo], _CheckableProtocol, Protocol):
 # describe the returned concrete type
 
 
-def strptime(__date_string: str, __format: str) -> AwareDateTime | NaiveDateTime:
+def strptime(__date_string: str, __format: str) -> DateTime[_tzinfo | None]:
     return cast(NaiveDateTime, _datetime.strptime(__date_string, __format))
 
 
 if sys.version_info >= (3, 7):
 
-    def fromisoformat(__date_string: str) -> AwareDateTime | NaiveDateTime:
+    def fromisoformat(__date_string: str) -> DateTime[_tzinfo | None]:
         return cast(NaiveDateTime, _datetime.fromisoformat(__date_string))
 
 
@@ -639,6 +621,11 @@ def date_only(d: _date) -> Date:
     if isinstance(d, _datetime):
         raise TypeError(f"{type(d)} is a datetime, not a date")
     return cast(Date, d)
+
+
+@overload
+def aware(t: _datetime, tztype: Type[_FuncTZ]) -> DateTime[_FuncTZ]:
+    ...
 
 
 @overload
@@ -651,10 +638,18 @@ def aware(t: _time) -> AwareTime:
     ...
 
 
-def aware(t: _datetime | _time) -> AwareDateTime | AwareTime:
-    if t.tzinfo is None:
+@overload
+def aware(t: _time, tztype: Type[_FuncTZ]) -> Time[_FuncTZ]:
+    ...
+
+
+def aware(
+    t: _datetime | _time, tztype: Type[_FuncTZ] | None = None
+) -> DateTime[_FuncTZ] | Time[_FuncTZ]:
+    tzcheck: Type[_tzinfo] = tztype if tztype is not None else _tzinfo
+    if not isinstance(t.tzinfo, tzcheck):
         raise TypeError(f"{t} is naive, not aware")
-    return cast(AwareDateTime, t)
+    return t  # type: ignore[return-value]
 
 
 @overload
@@ -674,7 +669,7 @@ def naive(t: _datetime | _time) -> NaiveDateTime | NaiveTime:
 
 
 @overload
-def concrete(dt: AwareDateTime | NaiveDateTime) -> _datetime:
+def concrete(dt: DateTime[_tzinfo | None]) -> _datetime:
     ...
 
 
@@ -684,12 +679,12 @@ def concrete(dt: Date) -> _date:
 
 
 @overload
-def concrete(dt: AwareTime | NaiveTime) -> _time:
+def concrete(dt: Time[_tzinfo | None]) -> _time:
     ...
 
 
 def concrete(
-    dt: Date | AwareDateTime | AwareTime | NaiveDateTime | NaiveTime,
+    dt: Date | DateTime[_tzinfo | None] | Time[_tzinfo | None],
 ) -> _datetime | _date | _time:
     if isinstance(dt, (_date, _time, _datetime)):
         return dt

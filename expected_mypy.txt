@@ -1,62 +1,39 @@
-tryit.py:19: error: Unsupported operand types for < ("NaiveDateTime" and "AwareDateTime")
-tryit.py:19: note: "AwareDateTime" is missing following "NaiveDateTime" protocol members:
-tryit.py:19: note:     utcfromtimestamp, utcnow
-tryit.py:19: note: Following member(s) of "AwareDateTime" have conflicts:
-tryit.py:19: note:     Expected:
-tryit.py:19: note:         @overload
-tryit.py:19: note:         def combine(cls, date: Date, time: Union[NaiveTime, AwareTime], tzinfo: None) -> NaiveDateTime
-tryit.py:19: note:         @overload
-tryit.py:19: note:         def combine(cls, date: Date, time: NaiveTime) -> NaiveDateTime
-tryit.py:19: note:     Got:
-tryit.py:19: note:         @overload
-tryit.py:19: note:         def combine(cls, date: Date, time: Union[NaiveTime, AwareTime], tzinfo: tzinfo) -> AwareDateTime
-tryit.py:19: note:         @overload
-tryit.py:19: note:         def combine(cls, date: Date, time: AwareTime) -> AwareDateTime
-tryit.py:19: note:     Expected:
-tryit.py:19: note:         def fromtimestamp(cls, float, tz: None = ...) -> NaiveDateTime
-tryit.py:19: note:     Got:
-tryit.py:19: note:         def fromtimestamp(cls, float, tz: tzinfo) -> AwareDateTime
-tryit.py:19: note:     <3 more conflict(s) not shown>
-tryit.py:21: error: Incompatible types in assignment (expression has type "AwareDateTime", variable has type "NaiveDateTime")
-tryit.py:21: note: "AwareDateTime" is missing following "NaiveDateTime" protocol members:
-tryit.py:21: note:     utcfromtimestamp, utcnow
+tryit.py:21: error: Unsupported operand types for < ("NaiveDateTime" and "AwareDateTime")  [operator]
 tryit.py:21: note: Following member(s) of "AwareDateTime" have conflicts:
 tryit.py:21: note:     Expected:
-tryit.py:21: note:         @overload
-tryit.py:21: note:         def combine(cls, date: Date, time: Union[NaiveTime, AwareTime], tzinfo: None) -> NaiveDateTime
-tryit.py:21: note:         @overload
-tryit.py:21: note:         def combine(cls, date: Date, time: NaiveTime) -> NaiveDateTime
+tryit.py:21: note:         def timetz(self) -> DateTime[None]
 tryit.py:21: note:     Got:
-tryit.py:21: note:         @overload
-tryit.py:21: note:         def combine(cls, date: Date, time: Union[NaiveTime, AwareTime], tzinfo: tzinfo) -> AwareDateTime
-tryit.py:21: note:         @overload
-tryit.py:21: note:         def combine(cls, date: Date, time: AwareTime) -> AwareDateTime
-tryit.py:21: note:     Expected:
-tryit.py:21: note:         def fromtimestamp(cls, float, tz: None = ...) -> NaiveDateTime
-tryit.py:21: note:     Got:
-tryit.py:21: note:         def fromtimestamp(cls, float, tz: tzinfo) -> AwareDateTime
-tryit.py:21: note:     <3 more conflict(s) not shown>
-tryit.py:24: error: Incompatible types in assignment (expression has type "NaiveDateTime", variable has type "AwareDateTime")
-tryit.py:24: note: Following member(s) of "NaiveDateTime" have conflicts:
-tryit.py:24: note:     Expected:
-tryit.py:24: note:         @overload
-tryit.py:24: note:         def combine(cls, date: Date, time: Union[NaiveTime, AwareTime], tzinfo: tzinfo) -> AwareDateTime
-tryit.py:24: note:         @overload
-tryit.py:24: note:         def combine(cls, date: Date, time: AwareTime) -> AwareDateTime
-tryit.py:24: note:     Got:
-tryit.py:24: note:         @overload
-tryit.py:24: note:         def combine(cls, date: Date, time: Union[NaiveTime, AwareTime], tzinfo: None) -> NaiveDateTime
-tryit.py:24: note:         @overload
-tryit.py:24: note:         def combine(cls, date: Date, time: NaiveTime) -> NaiveDateTime
-tryit.py:24: note:     Expected:
-tryit.py:24: note:         def fromtimestamp(cls, float, tz: tzinfo) -> AwareDateTime
-tryit.py:24: note:     Got:
-tryit.py:24: note:         def fromtimestamp(cls, float, tz: None = ...) -> NaiveDateTime
-tryit.py:24: note:     <3 more conflict(s) not shown>
-tryit.py:32: error: Incompatible types in assignment (expression has type "NaiveDateTime", variable has type "Date")
-tryit.py:33: error: Incompatible types in assignment (expression has type "AwareDateTime", variable has type "Date")
-tryit.py:38: error: No overload variant of "combine" of "AwareDateTime" matches argument types "Date", "NaiveTime"
-tryit.py:38: note: Possible overload variants:
-tryit.py:38: note:     def combine(cls, date: Date, time: Union[NaiveTime, AwareTime], tzinfo: tzinfo) -> AwareDateTime
-tryit.py:38: note:     def combine(cls, date: Date, time: AwareTime) -> AwareDateTime
-Found 6 errors in 1 file (checked 1 source file)
+tryit.py:21: note:         def timetz(self) -> DateTime[tzinfo]
+tryit.py:21: note:     tzinfo: expected "None", got "tzinfo"
+tryit.py:23: error: Incompatible types in assignment (expression has type "AwareDateTime", variable has type "NaiveDateTime")  [assignment]
+tryit.py:23: note: Following member(s) of "AwareDateTime" have conflicts:
+tryit.py:23: note:     Expected:
+tryit.py:23: note:         def timetz(self) -> DateTime[None]
+tryit.py:23: note:     Got:
+tryit.py:23: note:         def timetz(self) -> DateTime[tzinfo]
+tryit.py:23: note:     tzinfo: expected "None", got "tzinfo"
+tryit.py:26: error: Incompatible types in assignment (expression has type "NaiveDateTime", variable has type "AwareDateTime")  [assignment]
+tryit.py:26: note: Following member(s) of "NaiveDateTime" have conflicts:
+tryit.py:26: note:     Expected:
+tryit.py:26: note:         def timetz(self) -> DateTime[tzinfo]
+tryit.py:26: note:     Got:
+tryit.py:26: note:         def timetz(self) -> DateTime[None]
+tryit.py:26: note:     tzinfo: expected "tzinfo", got "None"
+tryit.py:34: error: Incompatible types in assignment (expression has type "NaiveDateTime", variable has type "Date")  [assignment]
+tryit.py:35: error: Incompatible types in assignment (expression has type "AwareDateTime", variable has type "Date")  [assignment]
+tryit.py:45: error: Unsupported operand types for < ("NaiveDateTime" and "DateTime[tzinfo]")  [operator]
+tryit.py:45: note: Following member(s) of "DateTime[tzinfo]" have conflicts:
+tryit.py:45: note:     Expected:
+tryit.py:45: note:         def timetz(self) -> DateTime[None]
+tryit.py:45: note:     Got:
+tryit.py:45: note:         def timetz(self) -> DateTime[tzinfo]
+tryit.py:45: note:     tzinfo: expected "None", got "tzinfo"
+tryit.py:46: error: Unsupported operand types for < ("AwareDateTime" and "DateTime[None]")  [operator]
+tryit.py:46: note: Following member(s) of "DateTime[None]" have conflicts:
+tryit.py:46: note:     Expected:
+tryit.py:46: note:         def timetz(self) -> DateTime[tzinfo]
+tryit.py:46: note:     Got:
+tryit.py:46: note:         def timetz(self) -> DateTime[None]
+tryit.py:46: note:     tzinfo: expected "tzinfo", got "None"
+tryit.py:48: error: "tzinfo" has no attribute "key"  [attr-defined]
+Found 8 errors in 1 file (checked 1 source file)

@@ -1,7 +1,9 @@
 from typing import cast
 from datetime import datetime, timezone, date, time
+from zoneinfo import ZoneInfo
 from datetype import (
     Date,
+    DateTime,
     naive,
     aware,
     date_only,
@@ -35,5 +37,15 @@ ddate: Date = b  # error for aware too
 naive_time: NaiveTime = naive(time(0))
 aware_time: AwareTime = aware(time(0))
 
-AwareDateTime.combine(cdate, naive_time)  # error because sometime is naive
-AwareDateTime.combine(cdate, aware_time)  # ok because b is aware
+combined_naive = DateTime.combine(cdate, naive_time)
+combined_aware = DateTime.combine(cdate, aware_time)
+
+x < combined_naive              # ok; both naive
+y < combined_aware              # ok; aware
+x < combined_aware              # error; naive/aware
+y < combined_naive              # error; aware/naive
+
+y.tzinfo.key                    # error; no attribute defined
+
+specific: DateTime[ZoneInfo] = DateTime.now(ZoneInfo("America/Los_Angeles"))
+specific.tzinfo.key             # ok; ZoneInfo has 'key' attribute
