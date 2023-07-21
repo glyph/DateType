@@ -481,6 +481,9 @@ class DateTime(Protocol[_GMaybeTZDT]):
     def ctime(self) -> str:
         ...
 
+    def strftime(self, __format: str) -> str:
+        ...
+
     def isoformat(self, sep: str = ..., timespec: str = ...) -> str:
         ...
 
