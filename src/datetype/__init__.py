@@ -14,27 +14,30 @@ from typing import (
     Any,
     ClassVar,
     NamedTuple,
-    Protocol,
     TYPE_CHECKING,
     Type,
     TypeVar,
     cast,
     overload,
-    runtime_checkable,
+    Optional,
 )
+try:
+    from typing import Protocol, runtime_checkable
+except ImportError:
+    from typing_extensions import Protocol, runtime_checkable
 
 
 _D = TypeVar("_D", bound="Date")
-_GMaybeTZT = TypeVar("_GMaybeTZT", bound=None | _tzinfo, covariant=True)
-_GMaybeTZDT = TypeVar("_GMaybeTZDT", bound=None | _tzinfo, covariant=True)
-_PMaybeTZ = TypeVar("_PMaybeTZ", bound=None | _tzinfo)
+_GMaybeTZT = TypeVar("_GMaybeTZT", bound=Optional[_tzinfo], covariant=True)
+_GMaybeTZDT = TypeVar("_GMaybeTZDT", bound=Optional[_tzinfo], covariant=True)
+_PMaybeTZ = TypeVar("_PMaybeTZ", bound=Optional[_tzinfo])
 _FuncTZ = TypeVar("_FuncTZ", bound=_tzinfo)
-_FuncOptionalTZ = TypeVar("_FuncOptionalTZ", bound=None | _tzinfo)
+_FuncOptionalTZ = TypeVar("_FuncOptionalTZ", bound=Optional[_tzinfo])
 
 
 Self = TypeVar("Self")
-AnyDateTime = TypeVar("AnyDateTime", bound="DateTime[_tzinfo | None]")
-AnyTime = TypeVar("AnyTime", bound="Time[_tzinfo | None]")
+AnyDateTime = TypeVar("AnyDateTime", bound="DateTime[Optional[_tzinfo]]")
+AnyTime = TypeVar("AnyTime", bound="Time[Optional[_tzinfo]]")
 
 if sys.version_info >= (3, 9):
 
@@ -325,7 +328,7 @@ class Time(Protocol[_GMaybeTZT]):
     if sys.version_info >= (3, 7):
 
         @classmethod
-        def fromisoformat(cls, __time_string: str) -> Time[None | _tzinfo]:
+        def fromisoformat(cls, __time_string: str) -> Time[Optional[_tzinfo]]:
             return cast(Time[Any], _time.fromisoformat(__time_string))
 
 
@@ -493,13 +496,13 @@ class DateTime(Protocol[_GMaybeTZDT]):
     def isoformat(self, sep: str = ..., timespec: str = ...) -> str:
         ...
 
-    def utcoffset(self) -> _timedelta | None:
+    def utcoffset(self) -> Optional[_timedelta]:
         ...
 
-    def tzname(self) -> str | None:
+    def tzname(self) -> Optional[str]:
         ...
 
-    def dst(self) -> _timedelta | None:
+    def dst(self) -> Optional[_timedelta]:
         ...
 
     def __le__(self: Self, __other: Self) -> bool:
@@ -559,7 +562,7 @@ class DateTime(Protocol[_GMaybeTZDT]):
         ...
 
     @classmethod
-    def now(cls, tz: _tzinfo | None = None) -> DateTime[None | _tzinfo]:
+    def now(cls, tz: Optional[_tzinfo] = None) -> DateTime[Optional[_tzinfo]]:
         return _datetime.now(tz)  # type: ignore[return-value]
 
     @overload
@@ -572,14 +575,14 @@ class DateTime(Protocol[_GMaybeTZDT]):
     @overload
     @classmethod
     def combine(
-        cls, date: Date, time: Time[_tzinfo | None], tzinfo: _FuncOptionalTZ
+        cls, date: Date, time: Time[Optional[_tzinfo]], tzinfo: _FuncOptionalTZ
     ) -> DateTime[_FuncOptionalTZ]:
         ...
 
     @classmethod
     def combine(
-        cls, date: Date, time: Time[_tzinfo | None], tzinfo: _tzinfo | None = None
-    ) -> DateTime[_tzinfo | None]:
+        cls, date: Date, time: Time[Optional[_tzinfo]], tzinfo: Optional[_tzinfo] = None
+    ) -> DateTime[Optional[_tzinfo]]:
         return _datetime.combine(
             concrete(date), concrete(time), tzinfo
         )  # type:ignore[return-value]
@@ -616,13 +619,13 @@ class AwareDateTime(DateTime[_tzinfo], _CheckableProtocol, Protocol):
 # describe the returned concrete type
 
 
-def strptime(__date_string: str, __format: str) -> DateTime[_tzinfo | None]:
+def strptime(__date_string: str, __format: str) -> DateTime[Optional[_tzinfo]]:
     return cast(NaiveDateTime, _datetime.strptime(__date_string, __format))
 
 
 if sys.version_info >= (3, 7):
 
-    def fromisoformat(__date_string: str) -> DateTime[_tzinfo | None]:
+    def fromisoformat(__date_string: str) -> DateTime[Optional[_tzinfo]]:
         return cast(NaiveDateTime, _datetime.fromisoformat(__date_string))
 
 
@@ -653,8 +656,8 @@ def aware(t: _time, tztype: Type[_FuncTZ]) -> Time[_FuncTZ]:
 
 
 def aware(
-    t: _datetime | _time, tztype: Type[_FuncTZ] | None = None
-) -> DateTime[_FuncTZ] | Time[_FuncTZ]:
+    t: Union[_datetime, _time], tztype: Optional[Type[_FuncTZ]] = None
+) -> Union[DateTime[_FuncTZ], Time[_FuncTZ]]:
     tzcheck: Type[_tzinfo] = tztype if tztype is not None else _tzinfo
     if not isinstance(t.tzinfo, tzcheck):
         raise TypeError(f"{t} is naive, not aware")
@@ -671,14 +674,14 @@ def naive(t: _time) -> NaiveTime:
     ...
 
 
-def naive(t: _datetime | _time) -> NaiveDateTime | NaiveTime:
+def naive(t: Union[_datetime, _time]) -> Union[NaiveDateTime, NaiveTime]:
     if t.tzinfo is not None:
         raise TypeError(f"{t} is aware, not naive")
     return cast(NaiveDateTime, t)
 
 
 @overload
-def concrete(dt: DateTime[_tzinfo | None]) -> _datetime:
+def concrete(dt: DateTime[Optional[_tzinfo]]) -> _datetime:
     ...
 
 
@@ -688,7 +691,7 @@ def concrete(dt: Date) -> _date:
 
 
 @overload
-def concrete(dt: Time[_tzinfo | None]) -> _time:
+def concrete(dt: Time[Optional[_tzinfo]]) -> _time:
     ...
 
 

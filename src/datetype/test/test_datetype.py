@@ -1,6 +1,6 @@
 from datetime import date, datetime, time, timezone
 from os import popen
-from typing import runtime_checkable
+from typing_extensions import runtime_checkable
 from unittest import TestCase
 
 from datetype import (
@@ -56,4 +56,4 @@ class DateTypeTests(TestCase):
         with open("expected_mypy.txt") as f:
             expected = f.read()
         self.maxDiff = 9999
-        self.assertEqual(actual, expected)
+        self.assertEqual(expected, actual)
