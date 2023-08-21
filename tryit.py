@@ -1,6 +1,6 @@
 from typing import cast
 from datetime import datetime, timezone, date, time
-from zoneinfo import ZoneInfo
+from backports.zoneinfo._zoneinfo import ZoneInfo
 from datetype import (
     Date,
     DateTime,
