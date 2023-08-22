@@ -18,8 +18,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python: ["3.10"]
-        TOX_ENV: ["lint", "py310", "mypy"]
+        python: ["3.13", "3.12", "3.11", "3.10", "3.9", "3.8", "3.7"]
+        TOX_ENV: ["lint", "py", "mypy"]
 
     steps:
       - uses: actions/checkout@v3
