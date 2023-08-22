@@ -1,4 +1,5 @@
-from datetime import date, datetime, time, timezone
+from sys import version_info
+from datetime import datetime, timezone
 from os import popen
 from typing_extensions import runtime_checkable
 from unittest import TestCase
@@ -51,7 +52,10 @@ class DateTypeTests(TestCase):
         """
         Make sure that we get expected mypy errors.
         """
-        with popen("mypy tryit.py") as f:
+        mypy_command = "mypy"
+        if version_info <= (3, 8):
+            mypy_command += " --ignore-missing-imports"
+        with popen(f"{mypy_command} tryit.py") as f:
             actual = f.read()
         with open("expected_mypy.txt") as f:
             expected = f.read()
