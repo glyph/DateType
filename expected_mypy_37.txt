@@ -1,0 +1,25 @@
+tryit.py:21: error: Unsupported operand types for < ("NaiveDateTime" and "AwareDateTime")  [operator]
+tryit.py:21: note: Following member(s) of "AwareDateTime" have conflicts:
+tryit.py:21: note:     Expected:
+tryit.py:21: note:         def timetz(self) -> DateTime[None]
+tryit.py:21: note:     Got:
+tryit.py:21: note:         def timetz(self) -> DateTime[tzinfo]
+tryit.py:21: note:     tzinfo: expected "None", got "tzinfo"
+tryit.py:23: error: Incompatible types in assignment (expression has type "AwareDateTime", variable has type "NaiveDateTime")  [assignment]
+tryit.py:23: note: Following member(s) of "AwareDateTime" have conflicts:
+tryit.py:23: note:     Expected:
+tryit.py:23: note:         def timetz(self) -> DateTime[None]
+tryit.py:23: note:     Got:
+tryit.py:23: note:         def timetz(self) -> DateTime[tzinfo]
+tryit.py:23: note:     tzinfo: expected "None", got "tzinfo"
+tryit.py:26: error: Incompatible types in assignment (expression has type "NaiveDateTime", variable has type "AwareDateTime")  [assignment]
+tryit.py:26: note: Following member(s) of "NaiveDateTime" have conflicts:
+tryit.py:26: note:     Expected:
+tryit.py:26: note:         def timetz(self) -> DateTime[tzinfo]
+tryit.py:26: note:     Got:
+tryit.py:26: note:         def timetz(self) -> DateTime[None]
+tryit.py:26: note:     tzinfo: expected "tzinfo", got "None"
+tryit.py:34: error: Incompatible types in assignment (expression has type "NaiveDateTime", variable has type "Date")  [assignment]
+tryit.py:35: error: Incompatible types in assignment (expression has type "AwareDateTime", variable has type "Date")  [assignment]
+tryit.py:48: error: "tzinfo" has no attribute "key"  [attr-defined]
+Found 6 errors in 1 file (checked 1 source file)
