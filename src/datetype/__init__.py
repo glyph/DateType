@@ -14,12 +14,13 @@ from typing import (
     Any,
     ClassVar,
     NamedTuple,
+    Optional,
     TYPE_CHECKING,
     Type,
     TypeVar,
+    Union,
     cast,
     overload,
-    Optional,
 )
 try:
     from typing import Protocol, runtime_checkable
