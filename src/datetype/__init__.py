@@ -524,11 +524,11 @@ class DateTime(Protocol[_GMaybeTZDT]):
         ...
 
     @overload
-    def __sub__(self: DTSelf, __other: DTSelf) -> _timedelta:
+    def __sub__(self: Self, __other: _timedelta) -> Self:
         ...
 
     @overload
-    def __sub__(self: Self, __other: _timedelta) -> Self:
+    def __sub__(self: DTSelf, __other: DTSelf) -> _timedelta:
         ...
 
     def __add__(self: Self, __other: _timedelta) -> Self:
