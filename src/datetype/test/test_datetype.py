@@ -53,7 +53,7 @@ class DateTypeTests(TestCase):
         Make sure that we get expected mypy errors.
         """
         mypy_command = "mypy"
-        if version_info <= (3, 8):
+        if version_info < (3, 9):
             mypy_command += " --ignore-missing-imports"
         with popen(f"{mypy_command} tryit.py") as f:
             actual = f.read()
