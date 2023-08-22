@@ -396,6 +396,7 @@ class DateTime(Protocol[_GMaybeTZDT]):
         ...
 
     if sys.version_info >= (3, 8):
+
         def date(self) -> Date:
             ...
 
@@ -482,11 +483,14 @@ class DateTime(Protocol[_GMaybeTZDT]):
         "If no replacement tz is specified then we inherit"
 
     @overload
-    def astimezone(self, tz: None = None) -> DateTime[_timezone]:
+
+        def astimezone(self, tz: None = None) -> DateTime[_timezone]:
         ...
 
+
     @overload
-    def astimezone(self, tz: _FuncTZ) -> DateTime[_FuncTZ]:
+
+        def astimezone(self, tz: _FuncTZ) -> DateTime[_FuncTZ]:
         ...
 
     def ctime(self) -> str:
@@ -568,6 +572,7 @@ class DateTime(Protocol[_GMaybeTZDT]):
         return _datetime.now(tz)  # type: ignore[return-value]
 
     if sys.version_info >= (3, 8):
+
         @overload
         @classmethod
         def combine(
@@ -584,16 +589,22 @@ class DateTime(Protocol[_GMaybeTZDT]):
 
         @classmethod
         def combine(
-            cls, date: Date, time: Time[Optional[_tzinfo]], tzinfo: Optional[_tzinfo] = None
+            cls,
+            date: Date,
+            time: Time[Optional[_tzinfo]],
+            tzinfo: Optional[_tzinfo] = None,
         ) -> DateTime[Optional[_tzinfo]]:
             return _datetime.combine(
                 concrete(date), concrete(time), tzinfo
             )  # type:ignore[return-value]
-    else:
-        @classmethod
-        def combine(cls, date: Date, time: Time, tzinfo: Optional[_tzinfo] = ...) -> DateTime:
-            ...
 
+    else:
+
+        @classmethod
+        def combine(
+            cls, date: Date, time: Time, tzinfo: Optional[_tzinfo] = ...
+        ) -> DateTime:
+            ...
 
     @classmethod
     def utcfromtimestamp(cls: type[Self], __t: float) -> DateTime[None]:
