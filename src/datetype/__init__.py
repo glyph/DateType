@@ -177,7 +177,6 @@ class Date(_CheckableProtocol, Protocol):
         def __radd__(self, __other: _timedelta) -> Date:
             ...
 
-        @overload
         def __sub__(self, __other: _timedelta) -> Date:
             ...
 
