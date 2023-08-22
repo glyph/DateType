@@ -22,6 +22,7 @@ from typing import (
     cast,
     overload,
 )
+
 try:
     from typing import Protocol, runtime_checkable
 except ImportError:
