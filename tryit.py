@@ -49,3 +49,6 @@ y.tzinfo.key                    # error; no attribute defined
 
 specific: DateTime[ZoneInfo] = DateTime.now(ZoneInfo("America/Los_Angeles"))
 specific.tzinfo.key             # ok; ZoneInfo has 'key' attribute
+
+not_naive: NaiveDateTime = a.astimezone()
+is_aware: DateTime[timezone] = a.astimezone(None)

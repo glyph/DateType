@@ -36,4 +36,11 @@ tryit.py:46: note:     Got:
 tryit.py:46: note:         def timetz(self) -> DateTime[None]
 tryit.py:46: note:     tzinfo: expected "tzinfo", got "None"
 tryit.py:48: error: "tzinfo" has no attribute "key"  [attr-defined]
-Found 8 errors in 1 file (checked 1 source file)
+tryit.py:53: error: Incompatible types in assignment (expression has type "DateTime[timezone]", variable has type "NaiveDateTime")  [assignment]
+tryit.py:53: note: Following member(s) of "DateTime[timezone]" have conflicts:
+tryit.py:53: note:     Expected:
+tryit.py:53: note:         def timetz(self) -> DateTime[None]
+tryit.py:53: note:     Got:
+tryit.py:53: note:         def timetz(self) -> DateTime[timezone]
+tryit.py:53: note:     tzinfo: expected "None", got "timezone"
+Found 9 errors in 1 file (checked 1 source file)
