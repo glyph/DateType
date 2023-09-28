@@ -7,6 +7,7 @@ from datetime import (
     time as _time,
     timedelta as _timedelta,
     tzinfo as _tzinfo,
+    timezone as _timezone,
 )
 from time import struct_time
 from typing import (
@@ -475,6 +476,11 @@ class DateTime(Protocol[_GMaybeTZDT]):
     ) -> Self:
         "If no replacement tz is specified then we inherit"
 
+    @overload
+    def astimezone(self, tz: None = None) -> DateTime[_timezone]:
+        ...
+
+    @overload
     def astimezone(self, tz: _FuncTZ) -> DateTime[_FuncTZ]:
         ...
 
