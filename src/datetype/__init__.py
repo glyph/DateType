@@ -391,7 +391,7 @@ class DateTime(Protocol[_GMaybeTZDT]):
     def utctimetuple(self) -> struct_time:
         ...
 
-    def _date(self) -> Date:
+    def date(self) -> Date:
         ...
 
     def time(self) -> NaiveDateTime:

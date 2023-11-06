@@ -1,8 +1,9 @@
-from unittest import TestCase
-from datetype import AwareDateTime, NaiveDateTime
-from datetime import datetime, timezone
+from datetime import date, datetime, time, timezone
 from os import popen
 from typing import runtime_checkable
+from unittest import TestCase
+
+from datetype import AwareDateTime, NaiveDateTime, Time, naive
 
 
 class DateTypeTests(TestCase):
@@ -14,14 +15,22 @@ class DateTypeTests(TestCase):
         """
         Some constructors.
         """
-        aware = AwareDateTime.now(timezone.utc)
-        naive = NaiveDateTime.now()
-        self.assertIsInstance(aware, datetime)
-        self.assertIsInstance(aware, AwareDateTime)
-        self.assertNotIsInstance(aware, NaiveDateTime)
-        self.assertIsInstance(naive, datetime)
-        self.assertIsInstance(naive, NaiveDateTime)
-        self.assertNotIsInstance(naive, AwareDateTime)
+        awareDT = AwareDateTime.now(timezone.utc)
+        naiveDT = NaiveDateTime.now()
+        self.assertIsInstance(awareDT, datetime)
+        self.assertIsInstance(awareDT, AwareDateTime)
+        self.assertNotIsInstance(awareDT, NaiveDateTime)
+        self.assertIsInstance(naiveDT, datetime)
+        self.assertIsInstance(naiveDT, NaiveDateTime)
+        self.assertNotIsInstance(naiveDT, AwareDateTime)
+
+    def test_methods(self) -> None:
+        """
+        Some methods.
+        """
+        naiveDT = naive(datetime(2023, 11, 1, 5, 4, 3))
+        self.assertEqual(naiveDT.date(), date(2023, 11, 1))
+        self.assertEqual(naiveDT.time(), naive(time(5, 4, 3)))
 
     def test_mypy_output(self) -> None:
         """
