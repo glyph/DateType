@@ -1,6 +1,6 @@
 [project]
 name = "datetype"
-version = "2023.11.7"
+version = "2023.11.8"
 description = "A type wrapper for the standard library `datetime` that supplies stricter checks, such as making 'datetime' not substitutable for 'date', and separating out Naive and Aware datetimes into separate, mutually-incompatible types."
 readme = "README.md"
 # Maybe we can support earlier versions, but I haven't tested yet so let's
