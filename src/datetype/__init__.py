@@ -538,7 +538,7 @@ class DateTime(Protocol[_GMaybeTZDT]):
         def isocalendar(self) -> tuple[int, int, int]:
             ...
 
-    def timetz(self) -> DateTime[_GMaybeTZDT]:
+    def timetz(self) -> Time[_GMaybeTZDT]:
         ...
 
     @classmethod
