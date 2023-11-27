@@ -28,14 +28,12 @@ try:
 except ImportError:
     from typing_extensions import Protocol, runtime_checkable  # type: ignore[assignment]
 
-
 _D = TypeVar("_D", bound="Date")
 _GMaybeTZT = TypeVar("_GMaybeTZT", bound=Optional[_tzinfo], covariant=True)
 _GMaybeTZDT = TypeVar("_GMaybeTZDT", bound=Optional[_tzinfo], covariant=True)
 _PMaybeTZ = TypeVar("_PMaybeTZ", bound=Optional[_tzinfo])
 _FuncTZ = TypeVar("_FuncTZ", bound=_tzinfo)
 _FuncOptionalTZ = TypeVar("_FuncOptionalTZ", bound=Optional[_tzinfo])
-
 
 Self = TypeVar("Self")
 AnyDateTime = TypeVar("AnyDateTime", bound="DateTime[Optional[_tzinfo]]")
@@ -48,7 +46,6 @@ if sys.version_info >= (3, 9):
         week: int
         weekday: int
 
-
 if not TYPE_CHECKING:
 
     class _CheckableProtocolMeta(type(Protocol)):
@@ -57,6 +54,7 @@ if not TYPE_CHECKING:
             'AwareDateTime' objects are datetimes with a timezone.
             """
             return self._subclass_check_hook(instance)
+
 
     class _CheckableProtocol(Protocol, metaclass=_CheckableProtocolMeta):
         pass
@@ -485,7 +483,6 @@ class DateTime(Protocol[_GMaybeTZDT]):
     @overload
     def astimezone(self, tz: None = None) -> DateTime[_timezone]:
         ...
-
 
     @overload
     def astimezone(self, tz: _FuncTZ) -> DateTime[_FuncTZ]:
