@@ -483,14 +483,12 @@ class DateTime(Protocol[_GMaybeTZDT]):
         "If no replacement tz is specified then we inherit"
 
     @overload
-
-        def astimezone(self, tz: None = None) -> DateTime[_timezone]:
+    def astimezone(self, tz: None = None) -> DateTime[_timezone]:
         ...
 
 
     @overload
-
-        def astimezone(self, tz: _FuncTZ) -> DateTime[_FuncTZ]:
+    def astimezone(self, tz: _FuncTZ) -> DateTime[_FuncTZ]:
         ...
 
     def ctime(self) -> str:

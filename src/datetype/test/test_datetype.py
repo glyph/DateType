@@ -1,5 +1,5 @@
 from sys import version_info
-from datetime import datetime, timezone
+from datetime import date, datetime, time, timezone
 from os import popen
 from typing_extensions import runtime_checkable
 from unittest import TestCase
