@@ -46,6 +46,7 @@ if sys.version_info >= (3, 9):
         week: int
         weekday: int
 
+
 if not TYPE_CHECKING:
 
     class _CheckableProtocolMeta(type(Protocol)):
@@ -54,7 +55,6 @@ if not TYPE_CHECKING:
             'AwareDateTime' objects are datetimes with a timezone.
             """
             return self._subclass_check_hook(instance)
-
 
     class _CheckableProtocol(Protocol, metaclass=_CheckableProtocolMeta):
         pass
