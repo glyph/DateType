@@ -53,15 +53,11 @@ class DateTypeTests(TestCase):
         Make sure that we get expected mypy errors.
         """
         mypy_command = "mypy"
-        expected_file_name = "expected_mypy"
-        if version_info < (3, 9):
+        if version_info < (3, 9):  # zoneinfo
             mypy_command += " --ignore-missing-imports"
-        if version_info[:2] == (3, 7):
-            expected_file_name += "_37"
-
         with popen(f"{mypy_command} tryit.py") as f:
             actual = f.read()
-        with open(f"{expected_file_name}.txt") as f:
+        with open("expected_mypy.txt") as f:
             expected = f.read()
         self.maxDiff = 9999
         self.assertEqual(expected, actual)
