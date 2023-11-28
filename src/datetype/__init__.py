@@ -564,30 +564,40 @@ class DateTime(Protocol[_GMaybeTZDT]):
     def now(cls, tz: Optional[_tzinfo] = None) -> DateTime[Optional[_tzinfo]]:
         return _datetime.now(tz)  # type: ignore[return-value]
 
-    @overload
-    @classmethod
-    def combine(
-        cls, date: Date, time: Time[_FuncOptionalTZ]
-    ) -> DateTime[_FuncOptionalTZ]:
-        ...
+    if sys.version_info >= (3, 8):
 
-    @overload
-    @classmethod
-    def combine(
-        cls, date: Date, time: Time[Optional[_tzinfo]], tzinfo: _FuncOptionalTZ
-    ) -> DateTime[_FuncOptionalTZ]:
-        ...
+        @overload
+        @classmethod
+        def combine(
+            cls, date: Date, time: Time[_FuncOptionalTZ]
+        ) -> DateTime[_FuncOptionalTZ]:
+            ...
 
-    @classmethod
-    def combine(
-        cls,
-        date: Date,
-        time: Time[Optional[_tzinfo]],
-        tzinfo: Optional[_tzinfo] = None,
-    ) -> DateTime[Optional[_tzinfo]]:
-        return _datetime.combine(
-            concrete(date), concrete(time), tzinfo
-        )  # type:ignore[return-value]
+        @overload
+        @classmethod
+        def combine(
+            cls, date: Date, time: Time[Optional[_tzinfo]], tzinfo: _FuncOptionalTZ
+        ) -> DateTime[_FuncOptionalTZ]:
+            ...
+
+        @classmethod
+        def combine(
+            cls,
+            date: Date,
+            time: Time[Optional[_tzinfo]],
+            tzinfo: Optional[_tzinfo] = None,
+        ) -> DateTime[Optional[_tzinfo]]:
+            return _datetime.combine(
+                concrete(date), concrete(time), tzinfo
+            )  # type:ignore[return-value]
+
+    else:
+
+        @classmethod
+        def combine(
+            cls, date: Date, time: Time, tzinfo: Optional[_tzinfo] = ...
+        ) -> DateTime:
+            ...
 
     @classmethod
     def utcfromtimestamp(cls: type[Self], __t: float) -> DateTime[None]:
