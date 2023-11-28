@@ -1,12 +1,10 @@
 from sys import version_info
 from datetime import date, datetime, time, timezone
 from os import popen
-from typing_extensions import runtime_checkable
 from unittest import TestCase
 
 from datetype import (
     AwareDateTime,
-    AwareTime,
     NaiveDateTime,
     NaiveTime,
     Time,
@@ -55,7 +53,7 @@ class DateTypeTests(TestCase):
         mypy_command = "mypy"
         expected_file_name = "expected_mypy"
         if version_info < (3, 9):
-            mypy_command += " --ignore-missing-imports"
+            mypy_command += " --ignore-missing-imports"  # zoneinfo
         if version_info[:2] == (3, 7):
             expected_file_name += "_37"
 
