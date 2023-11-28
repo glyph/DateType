@@ -1,6 +1,6 @@
-from sys import version_info
 from datetime import date, datetime, time, timezone
 from os import popen
+from sys import version_info
 from unittest import TestCase
 
 from datetype import (
