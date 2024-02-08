@@ -1,6 +1,6 @@
 [project]
 name = "datetype"
-version = "2023.11.8"
+version = "2024.2.8"
 description = "A type wrapper for the standard library `datetime` that supplies stricter checks, such as making 'datetime' not substitutable for 'date', and separating out Naive and Aware datetimes into separate, mutually-incompatible types."
 readme = "README.md"
 requires-python = ">=3.7"
@@ -11,7 +11,7 @@ authors = [
   {name = "Glyph", email = "glyph@twistedmatrix.com" } # Optional
 ]
 classifiers = [
-  "Development Status :: 3 - Alpha",
+  "Development Status :: 5 - Production/Stable",
   # Indicate who your project is intended for
   "Intended Audience :: Developers",
   "Programming Language :: Python :: 3.12",
