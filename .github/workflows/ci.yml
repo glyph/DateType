@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python: ["3.12.0-rc.1", "3.11", "3.10", "3.9", "3.8", "3.7"]
+        python: ["3.12", "3.11", "3.10", "3.9", "3.8", "3.7"]
         TOX_ENV: ["lint", "py", "mypy"]
 
     steps:
