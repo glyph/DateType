@@ -5,7 +5,7 @@ description = "A type wrapper for the standard library `datetime` that supplies 
 readme = "README.md"
 # Maybe we can support earlier versions, but I haven't tested yet so let's
 # start off cautious.
-requires-python = ">=3.10"
+requires-python = ">=3.7"
 # This file is derived directly from typeshed's `datetime.pyi`, so it's the
 # typeshed license.
 license = {file = "LICENSE.txt"}
@@ -16,7 +16,12 @@ classifiers = [
   "Development Status :: 3 - Alpha",
   # Indicate who your project is intended for
   "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.7",
 ]
 
 [build-system]

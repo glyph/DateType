@@ -9,15 +9,22 @@ on:
     branches:
       - trunk
 
+  workflow_dispatch:
+
 jobs:
   build:
-    name: ${{ matrix.TOX_ENV }}
+    name: ${{ matrix.TOX_ENV }} ${{ matrix.python }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        python: ["3.10"]
-        TOX_ENV: ["lint", "py310", "mypy"]
+        python: ["3.12", "3.11", "3.10", "3.9", "3.8", "3.7"]
+        TOX_ENV: ["lint", "py", "mypy"]
+        exclude:
+          - TOX_ENV: "lint"
+        include:
+          - TOX_ENV: "lint"
+            python: "3.12"
 
     steps:
       - uses: actions/checkout@v3
