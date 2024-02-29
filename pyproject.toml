@@ -1,6 +1,6 @@
 [project]
 name = "datetype"
-version = "2024.2.8"
+version = "2024.2.28"
 description = "A type wrapper for the standard library `datetime` that supplies stricter checks, such as making 'datetime' not substitutable for 'date', and separating out Naive and Aware datetimes into separate, mutually-incompatible types."
 readme = "README.md"
 requires-python = ">=3.7"
