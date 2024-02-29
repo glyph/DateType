@@ -418,6 +418,15 @@ class DateTime(Protocol[_GMaybeTZDT]):
     ) -> Self:
         "If no replacement tz is specified then we inherit"
 
+    @property
+    def year(self) -> int: ...
+
+    @property
+    def month(self) -> int: ...
+
+    @property
+    def day(self) -> int: ...
+
     @overload
     def astimezone(self, tz: None = None) -> DateTime[_timezone]: ...
 

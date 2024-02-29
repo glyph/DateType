@@ -46,6 +46,12 @@ class DateTypeTests(TestCase):
             expectAwareTime, aware(time(5, 4, 3, tzinfo=timezone.utc), timezone)
         )
 
+    def test_attributes(self) -> None:
+        naiveDT = naive(datetime(2023, 11, 1, 5, 4, 3))
+        self.assertEqual(naiveDT.year, 2023)
+        self.assertEqual(naiveDT.month, 11)
+        self.assertEqual(naiveDT.day, 1)
+
     def test_mypy_output(self) -> None:
         """
         Make sure that we get expected mypy errors.
