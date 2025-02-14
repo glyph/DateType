@@ -1,16 +1,16 @@
-from datetime import date, datetime, time, timezone
-from os import popen
+from datetime import date, datetime, time, timedelta, timezone
+from os import chdir, getcwd, popen
+from pathlib import Path
 from sys import version_info
 from unittest import TestCase
+from zoneinfo import ZoneInfo
 
-from datetype import (
-    AwareDateTime,
-    NaiveDateTime,
-    NaiveTime,
-    Time,
-    aware,
-    naive,
-)
+from datetype import AwareDateTime, NaiveDateTime, NaiveTime, Time, aware, naive
+
+TEST_DATA = (Path(__file__) / "..").resolve()
+while not (TEST_DATA / ".git").is_dir():
+    TEST_DATA = TEST_DATA / ".."
+TEST_DATA = TEST_DATA.resolve()
 
 
 class DateTypeTests(TestCase):
@@ -57,15 +57,31 @@ class DateTypeTests(TestCase):
         Make sure that we get expected mypy errors.
         """
         mypy_command = "mypy"
-        expected_file_name = "expected_mypy"
+        expected_file_name = TEST_DATA / "expected_mypy"
         if version_info < (3, 9):
             mypy_command += " --ignore-missing-imports"  # zoneinfo
         if version_info[:2] == (3, 7):
-            expected_file_name += "_37"
+            expected_file_name = expected_file_name.with_suffix("_37")
 
-        with popen(f"{mypy_command} tryit.py") as f:
+        cwd = getcwd()
+        try:
+            chdir(TEST_DATA)
+            it = popen(f"{mypy_command} tryit.py")
+        finally:
+            chdir(cwd)
+        with it as f:
             actual = f.read()
-        with open(f"{expected_file_name}.txt") as f:
+        with expected_file_name.with_suffix(".txt").open() as f:
             expected = f.read()
         self.maxDiff = 9999
         self.assertEqual(expected, actual)
+
+    def test_none_aware(self) -> None:
+        """
+        L{aware} with no argument will produce a ZoneInfo.
+        """
+        zi = ZoneInfo("US/Pacific")
+        stddt = datetime(2025, 2, 13, 15, 35, 13, 574354, tzinfo=zi)
+        awareified = aware(stddt)
+        self.assertIs(awareified.tzinfo, zi)
+        self.assertEqual(awareified.tzinfo.dst(stddt), timedelta(0))
