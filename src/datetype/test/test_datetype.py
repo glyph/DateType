@@ -2,8 +2,7 @@ from datetime import date, datetime, time, timedelta, timezone
 from os import chdir, getcwd, popen
 from pathlib import Path
 from sys import version_info
-from unittest import TestCase
-from zoneinfo import ZoneInfo
+from unittest import TestCase, skipIf
 
 from datetype import AwareDateTime, NaiveDateTime, NaiveTime, Time, aware, naive
 
@@ -57,11 +56,11 @@ class DateTypeTests(TestCase):
         Make sure that we get expected mypy errors.
         """
         mypy_command = "mypy"
-        expected_file_name = TEST_DATA / "expected_mypy"
+        expected_file_name = (
+            TEST_DATA / f"expected_mypy{'_37' if (version_info < (3, 8)) else ''}"
+        )
         if version_info < (3, 9):
             mypy_command += " --ignore-missing-imports"  # zoneinfo
-        if version_info[:2] == (3, 7):
-            expected_file_name = expected_file_name.with_suffix("_37")
 
         cwd = getcwd()
         try:
@@ -76,10 +75,13 @@ class DateTypeTests(TestCase):
         self.maxDiff = 9999
         self.assertEqual(expected, actual)
 
+    @skipIf(version_info < (3, 9), "ZoneInfo")
     def test_none_aware(self) -> None:
         """
         L{aware} with no argument will produce a ZoneInfo.
         """
+        from zoneinfo import ZoneInfo
+
         zi = ZoneInfo("US/Pacific")
         stddt = datetime(2025, 2, 13, 15, 35, 13, 574354, tzinfo=zi)
         awareified = aware(stddt)
