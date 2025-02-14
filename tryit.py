@@ -52,3 +52,5 @@ specific.tzinfo.key             # ok; ZoneInfo has 'key' attribute
 
 not_naive: NaiveDateTime = a.astimezone()
 is_aware: DateTime[timezone] = a.astimezone(None)
+
+not_aware_method_time: DateTime[timezone] = a.time()  # nope; actually naive
