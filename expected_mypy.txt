@@ -43,4 +43,5 @@ tryit.py:53: note:         def timetz(self) -> Time[None]
 tryit.py:53: note:     Got:
 tryit.py:53: note:         def timetz(self) -> Time[timezone]
 tryit.py:53: note:     tzinfo: expected "None", got "timezone"
-Found 9 errors in 1 file (checked 1 source file)
+tryit.py:56: error: Incompatible types in assignment (expression has type "NaiveTime", variable has type "DateTime[timezone]")  [assignment]
+Found 10 errors in 1 file (checked 1 source file)
