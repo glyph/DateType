@@ -591,7 +591,13 @@ def aware(t: _time, tztype: Type[_FuncTZ]) -> Time[_FuncTZ]: ...
 def aware(
     t: Union[_datetime, _time], tztype: Optional[Type[_FuncTZ]] = None
 ) -> Union[DateTime[_FuncTZ], Time[_FuncTZ]]:
-    tzcheck: Type[_tzinfo] = tztype if tztype is not None else _tzinfo
+    tzcheck: Type[_tzinfo]
+    if tztype is not None:
+        tzcheck = tztype
+    else:
+        # tzinfo works just fine with isinstance checks, which is why we care
+        # about matching against type[...] here, so we can cast it away safely
+        tzcheck = _tzinfo  # type:ignore
     if not isinstance(t.tzinfo, tzcheck):
         raise TypeError(f"{t} is naive, not aware")
     return t  # type: ignore[return-value]
