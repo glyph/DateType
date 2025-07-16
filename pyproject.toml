@@ -10,6 +10,8 @@ license = {file = "LICENSE.txt"}
 authors = [
   {name = "Glyph", email = "glyph@twistedmatrix.com" } # Optional
 ]
+urls = { Homepage = "https://github.com/glyph/DateType", Documentation = "https://datetype.readthedocs.io/en/latest/" }
+
 classifiers = [
   "Development Status :: 5 - Production/Stable",
   # Indicate who your project is intended for
