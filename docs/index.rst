@@ -116,7 +116,7 @@ However, in a real Python program, you are almost certainly going to need to dea
 
 - ``datetype.aware(datetime|time, [type[timezone]:TZ]) -> DateType[TZ]`` : If you have a standard library object ``dt``, you can call ``aware(dt)`` to verify that it has a non-``None`` tzinfo, and get back a ``DateType`` object specialized on that timezone.  If you pass a specific timezone type, it will verify and specialize on that exact type rather than the base ``tzinfo``.
 - ``datetype.naive(datetime|time) -> DateType[None]`` : If you have a standard library object with *no* timezone, this will verify that, and return a ``DateType[None]``.
-- ``datetype.concrete(datetype.Date | datetype.DateTime | datetype.Time) -> datetime.datedate | datetime.datetime | datetime.time`` : If you have a ``datetype`` object of some type, this will return it as a ``datetime`` object instead.
+- ``datetype.concrete(datetype.Date | datetype.DateTime | datetype.Time) -> datetime.date | datetime.datetime | datetime.time`` : If you have a ``datetype`` object of some type, this will return it as a ``datetime`` object instead.
 
 Note that *at runtime*, these types are all the exact same classes.  None of these functions actually instantiate anything new.  These conversions merely verify any relevant invariants, then return the abstract type represnting those invariants.
 
