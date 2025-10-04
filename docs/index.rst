@@ -131,3 +131,6 @@ By doing so, you will:
    :maxdepth: 2
    :caption: Contents:
 
+   index
+   api/index
+
