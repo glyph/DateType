@@ -415,8 +415,7 @@ class DateTime(Protocol[_GMaybeTZDT]):
         microsecond: int = ...,
         *,
         fold: int = ...,
-    ) -> Self:
-        "If no replacement tz is specified then we inherit"
+    ) -> Self: ...
 
     @property
     def year(self) -> int: ...
