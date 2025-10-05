@@ -54,3 +54,8 @@ not_naive: NaiveDateTime = a.astimezone()
 is_aware: DateTime[timezone] = a.astimezone(None)
 
 not_aware_method_time: DateTime[timezone] = a.time()  # nope; actually naive
+
+x - y                           # error; naive & aware are incompatible
+y - x                           # also error
+y - is_aware                    # ok
+is_aware - y                    # ok

@@ -44,4 +44,18 @@ tryit.py:53: note:     Got:
 tryit.py:53: note:         def timetz(self) -> Time[timezone]
 tryit.py:53: note:     tzinfo: expected "None", got "timezone"
 tryit.py:56: error: Incompatible types in assignment (expression has type "NaiveTime", variable has type "DateTime[timezone]")  [assignment]
-Found 10 errors in 1 file (checked 1 source file)
+tryit.py:58: error: Unsupported operand types for - ("NaiveDateTime" and "AwareDateTime")  [operator]
+tryit.py:58: note: Following member(s) of "AwareDateTime" have conflicts:
+tryit.py:58: note:     Expected:
+tryit.py:58: note:         def timetz(self) -> Time[None]
+tryit.py:58: note:     Got:
+tryit.py:58: note:         def timetz(self) -> Time[tzinfo]
+tryit.py:58: note:     tzinfo: expected "None", got "tzinfo"
+tryit.py:59: error: Unsupported operand types for - ("AwareDateTime" and "NaiveDateTime")  [operator]
+tryit.py:59: note: Following member(s) of "NaiveDateTime" have conflicts:
+tryit.py:59: note:     Expected:
+tryit.py:59: note:         def timetz(self) -> Time[tzinfo]
+tryit.py:59: note:     Got:
+tryit.py:59: note:         def timetz(self) -> Time[None]
+tryit.py:59: note:     tzinfo: expected "tzinfo", got "None"
+Found 12 errors in 1 file (checked 1 source file)
