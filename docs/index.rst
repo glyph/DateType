@@ -46,8 +46,7 @@ In the two places that a timezone is used as a return value in one of these :py:
 
 This means that, for example, if you have a ``datetype.DateTime[``\ :py:class:`zoneinfo.ZoneInfo`\ ``]``, you can get its timezone without checking anything, and it will type-check correctly:
 
-.. code-block::
-   :language: python
+.. code-block:: python
 
    from datetype import DateTime
    from zoneinfo import ZoneInfo
@@ -57,8 +56,7 @@ This means that, for example, if you have a ``datetype.DateTime[``\ :py:class:`z
 
 By contrast, the ``datetime`` version of this:
 
-.. code-block::
-   :language: python
+.. code-block:: python
 
    from datetime import datetime
 
