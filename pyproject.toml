@@ -8,24 +8,24 @@ requires-python = ">=3.7"
 # typeshed license.
 license = {file = "LICENSE.txt"}
 authors = [
-  {name = "Glyph", email = "glyph@twistedmatrix.com" } # Optional
+    {name = "Glyph", email = "glyph@twistedmatrix.com" } # Optional
 ]
 urls = { Homepage = "https://github.com/glyph/DateType", Documentation = "https://datetype.readthedocs.io/en/latest/" }
 
 classifiers = [
-  "Development Status :: 5 - Production/Stable",
-  # Indicate who your project is intended for
-  "Intended Audience :: Developers",
-  "Programming Language :: Python :: 3.13",
-  "Programming Language :: Python :: 3.12",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.8",
-  "Programming Language :: Python :: 3.7",
+    "Development Status :: 5 - Production/Stable",
+    # Indicate who your project is intended for
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.7",
 ]
 dependencies = [
-  "typing_extensions ; python_version < '3.8'"
+    "typing_extensions ; python_version < '3.8'"
 ]
 
 [build-system]
