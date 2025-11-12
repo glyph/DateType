@@ -39,6 +39,8 @@ Self = TypeVar("Self")
 AnyDateTime = TypeVar("AnyDateTime", bound="DateTime[Optional[_tzinfo]]")
 AnyTime = TypeVar("AnyTime", bound="Time[Optional[_tzinfo]]")
 
+_missing = object()
+
 if sys.version_info >= (3, 9):
 
     class _IsoCalendarDate(NamedTuple):
@@ -513,8 +515,10 @@ class DateTime(Protocol[_GMaybeTZDT]):
             cls,
             date: Date,
             time: Time[Optional[_tzinfo]],
-            tzinfo: Optional[_tzinfo] = None,
+            tzinfo: Optional[_tzinfo] = _missing,  # type: ignore[assignment]
         ) -> DateTime[Optional[_tzinfo]]:
+            if tzinfo is _missing:
+                tzinfo = time.tzinfo
             return _datetime.combine(
                 concrete(date), concrete(time), tzinfo
             )  # type:ignore[return-value]

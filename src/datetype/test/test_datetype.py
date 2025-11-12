@@ -12,6 +12,7 @@ from datetype import (
     aware,
     naive,
     DateTime,
+    date_only,
 )
 
 TEST_DATA = (Path(__file__) / "..").resolve()
@@ -109,3 +110,31 @@ class DateTypeTests(TestCase):
 
         self.assertEqual(dtzi - dttz, timedelta(0))
         self.assertEqual(dttz - dtzi, timedelta(0))
+
+    def test_combine(self) -> None:
+        from zoneinfo import ZoneInfo
+
+        d = date_only(date(2025, 2, 13))
+        aware_time = aware(
+            time(hour=15, minute=35, second=13, tzinfo=timezone.utc), timezone
+        )
+        naive_time = naive(time(hour=15, minute=35, second=13))
+
+        combined_aware: DateTime[timezone] = DateTime.combine(d, aware_time)
+        combined_naive: DateTime[None] = DateTime.combine(d, naive_time)
+
+        self.assertIsInstance(combined_naive, NaiveDateTime)
+        self.assertIsInstance(combined_aware, AwareDateTime)
+        self.assertIs(combined_aware.tzinfo, timezone.utc)
+
+        zi = ZoneInfo("Europe/Berlin")
+
+        adt_zi: DateTime[ZoneInfo] = DateTime.combine(d, aware_time, zi)
+        self.assertIsInstance(adt_zi, AwareDateTime)
+        adt_naive: DateTime[None] = DateTime.combine(d, aware_time, tzinfo=None)
+        self.assertIsInstance(adt_naive, NaiveDateTime)
+
+        ndt_zi: DateTime[ZoneInfo] = DateTime.combine(d, naive_time, zi)
+        self.assertIsInstance(ndt_zi, AwareDateTime)
+        ndt_naive: DateTime[None] = DateTime.combine(d, naive_time, tzinfo=None)
+        self.assertIsInstance(ndt_naive, NaiveDateTime)
