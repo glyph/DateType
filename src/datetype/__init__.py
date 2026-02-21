@@ -521,7 +521,7 @@ class DateTime(Protocol[_GMaybeTZDT]):
                 tzinfo = time.tzinfo
             return _datetime.combine(
                 concrete(date), concrete(time), tzinfo
-            )  # type:ignore[return-value]
+            )  # type: ignore[return-value]
 
     else:
 
@@ -603,7 +603,7 @@ def aware(
     else:
         # tzinfo works just fine with isinstance checks, which is why we care
         # about matching against type[...] here, so we can cast it away safely
-        tzcheck = _tzinfo  # type:ignore
+        tzcheck = _tzinfo  # type: ignore
     if not isinstance(t.tzinfo, tzcheck):
         raise TypeError(f"{t} is naive, not aware")
     return t  # type: ignore[return-value]
