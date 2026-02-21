@@ -2,8 +2,8 @@
 
 ## A Workaround
 
-DateType is a [workaround for this
-bug](https://github.com/python/mypy/issues/9015) to demonstrate that we could
+DateType is a workaround for [two](https://github.com/python/mypy/issues/9015)
+[bugs](https://github.com/python/mypy/issues/10067) to demonstrate that we could
 have a type-checking-time wrapper for `datetime` that doesn't change (or almost
 doesn't change) the implementation, but fixes up two very annoying behaviors of
 the stdlib `datetime` module:
