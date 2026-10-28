@@ -23,3 +23,9 @@ the stdlib ``datetime`` module:
 There's a very small bit of implementation glue (concrete ``@classmethod``\ s for
 construction on the ``Naive`` and ``Aware`` types, and a few functions that do
 runtime checks to convert to/from stdlib types).
+
+AI Policy
+=========
+
+This repository follows the `Twisted AI Policy
+<https://docs.twisted.org/en/latest/development/ai-policy.html>`_.
